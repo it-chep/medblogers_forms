@@ -1,0 +1,39 @@
+version: "3.6"
+
+services:
+  forms-postgres:
+    image: postgres:14.8
+    shm_size: 1g
+    container_name: forms-postgres
+    command: ["postgres", "-c", "log_statement=all"]
+    networks:
+      - forms-network
+    environment:
+      - POSTGRES_INITDB_WALDIR=/var/log/pg_logs
+      - POSTGRES_PASSWORD=forms
+      - POSTGRES_USER=forms
+      - POSTGRES_DB=forms
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+
+  forms-redis:
+    image: redis
+    container_name: forms-redis
+    networks:
+      - forms-network
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+
+
+
+networks:
+  forms-network:
+    driver: bridge
+    ipam:
+      driver: default
+#      config:
+#        - subnet: ${NETWORK_ADDRESS}
