@@ -28,6 +28,29 @@ services:
     ports:
       - "6379:6379"
 
+  forms-application:
+      build: .
+      ports:
+        - "8000:8000"
+      expose:
+        - 8000
+      container_name: forms-application
+      networks:
+        - forms-network
+      depends_on:
+        - forms-postgres
+      environment:
+        - C_FORCE_ROOT='true'
+        - PYTHONUNBUFFERED=1
+        - LOCAL_PYTEST=1
+        - DB_USER=${DB_USER}
+        - DB_PASSWORD=${DB_PASSWORD}
+        - DB_NAME=${DB_NAME}
+        - DB_PORT=${DB_PORT}
+        - DB_HOST=${DB_HOST}
+        - DEBUG=${DEBUG}
+        - ENVIRONMENT_TYPE=docker
+
 
 
 networks:
@@ -35,5 +58,3 @@ networks:
     driver: bridge
     ipam:
       driver: default
-#      config:
-#        - subnet: ${NETWORK_ADDRESS}
