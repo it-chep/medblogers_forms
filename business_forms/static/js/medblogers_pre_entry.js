@@ -29,6 +29,16 @@ $(document).ready(function () {
         });
     });
 
+    $('#radio').click(function () {
+        const $idPolicyAgreement = $('#id_policy_agreement');
+        $idPolicyAgreement.prop('checked', true);
+
+        const $fieldInputContainer = $(this).closest('.field_inline_item_container');
+        const $fieldWarningContainer = $fieldInputContainer.find('.field_item_warning_container');
+        $fieldInputContainer.removeClass('invalid');
+        $fieldWarningContainer.css('display', 'none');
+    });
+
     $('.submit_button').click(function () {
 
         let isValid = true;
@@ -38,31 +48,28 @@ $(document).ready(function () {
             const $fieldInputContainer = $(this).closest('.field_inline_item_container');
             const $line = $(this).closest('.input_container').find('.line');
             const $fieldWarningContainer = $fieldInputContainer.find('.field_item_warning_container');
-
-            if ($(this).is(':checkbox')) {
-                if (!$(this).is(':checked')) {
-                    $fieldInputContainer.addClass('invalid');
-                    $line.addClass('invalid');
-                    $fieldWarningContainer.css('display', 'block');
-                    isValid = false;
-                } else {
-                    $fieldInputContainer.removeClass('invalid');
-                    $line.removeClass('invalid');
-                    $fieldWarningContainer.css('display', 'none');
-                }
+            if (!$(this).val() && $(this).prop('required')) {
+                $fieldInputContainer.addClass('invalid');
+                $line.addClass('invalid');
+                $fieldWarningContainer.css('display', 'block');
+                isValid = false;
             } else {
-                if (!$(this).val() && $(this).prop('required')) {
-                    $fieldInputContainer.addClass('invalid');
-                    $line.addClass('invalid');
-                    $fieldWarningContainer.css('display', 'block');
-                    isValid = false;
-                } else {
-                    $fieldInputContainer.removeClass('invalid');
-                    $line.removeClass('invalid');
-                    $fieldWarningContainer.css('display', 'none');
-                }
+                $fieldInputContainer.removeClass('invalid');
+                $line.removeClass('invalid');
+                $fieldWarningContainer.css('display', 'none');
             }
         });
+        const $idPolicyPolicy = $('#id_policy_agreement')
+
+        if ($idPolicyPolicy.prop('checked') !== true) {
+            const $fieldInputContainer = $idPolicyPolicy.closest('.field_inline_item_container');
+            const $fieldWarningContainer = $fieldInputContainer.find('.field_item_warning_container');
+            $fieldInputContainer.addClass('invalid');
+            $fieldWarningContainer.css('display', 'block');
+            isValid = false;
+        }
+
+        formData["privacy_policy"] = $idPolicyPolicy.prop('checked')
 
         if (!isValid) {
             return

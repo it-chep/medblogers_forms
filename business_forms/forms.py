@@ -21,7 +21,7 @@ class MedblogersPreEntryForm(forms.ModelForm):
             'phone': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
             'instagram_username': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
             'tg_username': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
-            'policy_agreement': forms.CheckboxInput()
+            'policy_agreement': forms.CheckboxInput(attrs={'style': 'display:none'})
         }
 
     def __init__(self, *args, **kwargs):
