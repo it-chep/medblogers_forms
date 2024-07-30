@@ -37,6 +37,8 @@ services:
       expose:
         - 8000
       container_name: forms-application
+      volumes:
+        - media:/app/media
       networks:
         - forms-network
       depends_on:
@@ -56,6 +58,7 @@ services:
 
 volumes:
   pg_data:
+  media:
 
 networks:
   forms-network:
