@@ -19,11 +19,10 @@
 }
 
 @media (max-width: 480px) {
-
     .inline_container {
         max-width: 100%;
         margin: auto;
-        font-size: 26px;
+        font-size: 18px;
         margin-top: 12px;
         margin-bottom: 12px;
     }

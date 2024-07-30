@@ -195,7 +195,7 @@ input {
     line-height: 20px;
     color: rgb(32, 33, 36);
     border: unset;
-    width: 50%;
+    width: 300px;
 }
 
 .line {
@@ -430,6 +430,7 @@ input.checkbox {
     display: inline-block;
     padding-left: 38px;
     margin-bottom: 10px;
+    width: 50px;
     position: relative;
     font-weight: 500;
     font-size: 12pt;
