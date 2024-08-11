@@ -46,7 +46,7 @@ class BusinessFormAdmin(admin.ModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
         form.base_fields['content_type'].queryset = ContentType.objects.filter(
-            model__in=['medblogerspreentry', 'nastavnichestvopreentry'])
+            model__in=['medblogerspreentry', 'nastavnichestvopreentry', 'nationalblogersassociation'])
         return form
 
 

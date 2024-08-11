@@ -1,4 +1,31 @@
 $(document).ready(function () {
+    const today = new Date();
+    const hundredYearsAgo = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
+
+    $('.datepicker').datepicker({
+        format: 'dd.mm.yyyy',
+        language: 'ru',
+        autoclose: true,
+        todayHighlight: true,
+        endDate: today,
+        startDate: hundredYearsAgo
+    });
+
+    $('#id_birth_date').on('input', function (e) {
+        var input = $(this).val();
+        input = input.replace(/[^0-9.]/g, '');
+        if (input.length >= 2 && input.charAt(2) !== '.') {
+            input = input.slice(0, 2) + '.' + input.slice(2);
+        }
+        if (input.length >= 5 && input.charAt(5) !== '.') {
+            input = input.slice(0, 5) + '.' + input.slice(5);
+        }
+        if (input.length > 10) {
+            input = input.slice(0, 10);
+        }
+        $(this).val(input);
+    });
+
     $('.input_container input').each(function () {
         const $fieldInputContainer = $(this).closest('.field_inline_item_container');
         const $line = $(this).closest('.input_container').find('.line')

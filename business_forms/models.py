@@ -47,7 +47,8 @@ class BaseModelForm:
 
     @property
     def tg_username_link(self):
-        return f"https://t.me/{self.tg_username}"
+        tg_username = self.tg_username.replace("@", '')
+        return f"https://t.me/{tg_username}"
 
     @property
     def tg_phone_link(self):
@@ -215,7 +216,8 @@ class NastavnichestvoPreEntry(models.Model):
     @property
     def tg_link(self):
         if self.tg_username:
-            return f"https://t.me/{self.tg_username}"
+            tg_username = self.tg_username.replace('@', '')
+            return f"https://t.me/{tg_username}"
         else:
             return f"https://t.me/{format_phone_number(self.phone)}"
 
@@ -246,3 +248,75 @@ class NastavnichestvoPreEntry(models.Model):
     class Meta:
         verbose_name = "запись в анкете предзаписи на наставничество"
         verbose_name_plural = "Анкета предзаписи на наставничество"
+
+
+class NationalBlogersAssociation(models.Model):
+    NATIONAL_CHOICES = (
+        (1, "Открыт"),
+        (2, "В клубе"),
+        (3, "Связалась, жду ответ"),
+        (4, "Не отвечает"),
+        (5, "Зайдет позже")
+    )
+    status = models.IntegerField(choices=NATIONAL_CHOICES, default=1, verbose_name="Статус")
+
+    name = models.CharField(
+        max_length=255, verbose_name="Ваше имя и фамилия", null=True, blank=True
+    )
+    birth_date = models.DateField(
+        verbose_name="Дата рождения", null=True, blank=True
+    )
+    city = models.CharField(
+        max_length=255, verbose_name="Город проживания", null=True, blank=True
+    )
+    job = models.CharField(
+        max_length=255, verbose_name="Место работы, должность", null=True, blank=True
+    )
+    speciality = models.CharField(
+        max_length=255, verbose_name="Специальность", null=True, blank=True
+    )
+    phone_number = models.CharField(
+        max_length=255, verbose_name="Контактный телефон", null=True, blank=True
+    )
+    email = models.EmailField(
+        verbose_name="Адрес электронной почты", null=True, blank=True
+    )
+    blog_link = models.CharField(
+        verbose_name="Ссылка на социальные сети / блог", max_length=255, null=True, blank=True
+    )
+    expectations = models.TextField(
+        verbose_name="Ваши ожидания от участия в Национальной Ассоциации блогеров в сфере здравоохранения", null=True,
+        blank=True
+    )
+    policy_agreement = models.BooleanField(
+        verbose_name="Согласен с политикой обработки персональных данных",
+        default=False
+    )
+
+    def colored_status(self):
+        color = 'black'
+        background_color = 'white'
+        if self.status == 2:
+            color = 'white'
+            background_color = '#4dab4d'
+        elif self.status == 3:
+            color = 'white'
+            background_color = '#ff9c00'
+        elif self.status == 4:
+            color = 'white'
+            background_color = '#ff0000'
+        elif self.status == 5:
+            color = 'white'
+            background_color = 'black'
+        return format_html(
+            '<span style="background-color: {}; color: {}; border: 1px solid black; position:relative; display: '
+            'block; padding: 5px; text-align: center;'
+            'margin: -5px; border-radius: 8px;">{}</span>', background_color, color,
+            self.get_status_display()
+        )
+
+    colored_status.short_description = 'Статус'
+
+    class Meta:
+        verbose_name = "запись в анкете Национальная ассоциация блогеров в сфере здравоохранения"
+        verbose_name_plural = "Анкета Национальная ассоциация блогеров в сфере здравоохранения"

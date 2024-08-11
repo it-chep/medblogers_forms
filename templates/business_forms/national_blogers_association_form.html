@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_styles %}
+{% endblock %}
+
+{% block extra_scripts %}
+    <script src="{% static "js/medblogers_pre_entry.js" %}"></script>
+{% endblock %}
+
+{% block title %}
+    Вступительная анкета
+{% endblock %}
+
+{% block extra_links %}
+    <link rel="stylesheet" href="{% static "css/pink_form.css" %}">
+{% endblock %}
+
+{% block content %}
+    <form action="{% url "national_medbloger" %}" method="post">
+        {% csrf_token %}
+        <div class="form-container">
+            <div class="description_container">
+                <div class="description_container_header_cap"></div>
+                <div class="description_container_header_container">
+                    <div class="description_container_header">
+                        <div class="description_container_header_text" dir="auto" role="heading" aria-level="1">
+                            Вступительная анкета
+                        </div>
+                    </div>
+                    <div class="description_container_header_body" dir="auto">
+                        Уважаемый коллега! Заполните, пожалуйста, анкету на вступление. Проверьте корректность телефона
+                        и электронной почты.
+                    </div>
+                    <div class="header_image_container">
+                        <img src="{{ business_form_settings.photo.url }}">
+                    </div>
+                </div>
+            </div>
+            <div class="field_list" role="list">
+                {% for field in national_form %}
+                    <div class="field_item_container" role="listitem">
+                        <div class="field_inline_item_container">
+                            <div class="field_item_label_container">
+                                <div class="field_item_label">
+                                    <div class="field_item_label_text">
+                                        {% if field.name != "policy_agreement" %}
+                                            {{ field.label }}
+                                        {% else %}
+                                            Согласен с
+                                            <a href="https://docs.google.com/document/d/1gwotwzPEN-fYGmfrnhLP1KvnhTkHmw6IK3quQukhw_8/edit"
+                                               target="_blank">политикой обработки персональных данных</a>
+                                        {% endif %}
+                                        <span class="required_star">*</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field_item_input_container">
+                                <div class="field_item_input">
+                                    <div class="field_item_input_inline">
+                                        <div class="input_container">
+                                            {% if field.name != "policy_agreement" %}
+                                                {{ field }}
+                                            {% else %}
+                                                {{ field }}
+                                                <div class="radio-button-container">
+                                                    <div class="radio-button">
+                                                        <input type="radio" class="radio-button__input" id="radio"
+                                                               name="radio-group">
+                                                        <label class="radio-button__label" for="radio">
+                                                            <span class="radio-button__custom"></span>
+                                                            да
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            <div class="line"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field_item_warning_container">
+                                <div class="field_item_warning">
+                                    <img src="{% static "img/warning.svg" %}">
+                                    <span class="warning_text">Это обязательный вопрос.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+            <div class="buttons_container">
+                <div class="buttons_inline_container">
+                    <div class="submit_container">
+                        <div class="submit_button" role="button">
+                        <span class="submit_text_container">
+                            <span class="submit_text">
+                                Отправить
+                            </span>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="clear_container">
+                        <div class="clear_inline_container" role="button">
+                            <span class="clear_button">
+                                <span class="clear_button_text">Очистить форму</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

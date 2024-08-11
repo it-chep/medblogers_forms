@@ -12,7 +12,7 @@ DEBUG = os.getenv('DEBUG') == 'True'
 CSRF_TRUSTED_ORIGINS = ['http://forms.readyschool.ru', 'http://www.forms.readyschool.ru',
                         'https://www.forms.readyschool.ru', 'https://forms.readyschool.ru', 'http://127.0.0.1']
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["forms.readyschool.ru", "www.forms.readyschool.ru", "127.0.0.1", "localhost"]
 
 INSTALLED_APPS = [
     # GRAPPELLI ADMIN
@@ -38,6 +38,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'business_forms.middleware.TelegramAlertMiddleware',
 ]
 
 ROOT_URLCONF = 'medblogers_forms.urls'
@@ -119,3 +120,64 @@ SALEBOT_API_URL = f"https://chatter.salebot.pro/api/{os.environ.get('SALEBOT_API
 MAIN_ADMIN_ID = os.environ.get("MAIN_ADMIN_ID")
 ADMINS_CHAT_ID = os.environ.get("ADMINS_CHAT_ID")
 TEST_ADMIN_ID = os.environ.get("TEST_ADMIN_ID")
+
+ALERT_CHAT_ID = os.environ.get("ALERT_CHAT_ID")
+
+# BOT CONFIG
+BOT_TOKEN = os.getenv('BOT_TOKEN')
+TEST_TOKEN = os.getenv('TEST_TOKEN')
+WEBHOOK_URL = os.getenv('WEBHOOK_URL')
+
+# ELK
+LOGSTASH_HOST = os.getenv('LOGSTASH_HOST')
+LOGSTASH_PORT = os.getenv('LOGSTASH_PORT')
+LOGSTASH_TAG = os.getenv('LOGSTASH_TAG')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'logstash': {
+            'level': 'INFO',
+            'class': 'logstash.TCPLogstashHandler',
+            'host': LOGSTASH_HOST,
+            'port': LOGSTASH_PORT,
+            'version': 1,
+            'message_type': LOGSTASH_TAG,
+            'fqdn': False,
+            'tags': ['django', LOGSTASH_TAG],
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['logstash'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['logstash'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['logstash'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.security': {
+            'handlers': ['logstash'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    }
+}

@@ -13,10 +13,10 @@
 }
 
 body {
-    font-family: 'Montserrat', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+    font-family: 'Montserrat', Roboto, RobotoDraft, Helvetica, Arial, sans-serif !important;
     margin: 0;
     padding: 0;
-    background-color: rgb(231, 246, 252);
+    background-color: rgb(231, 246, 252) !important;
     word-break: break-word;
 }
 
@@ -430,7 +430,7 @@ input.checkbox {
     display: inline-block;
     padding-left: 38px;
     margin-bottom: 10px;
-    width: 50px;
+    width: 80px;
     position: relative;
     font-weight: 500;
     font-size: 12pt;
@@ -462,4 +462,40 @@ input.checkbox {
     transform: scale(1.2);
     border-color: rgb(0, 138, 195);
     box-shadow: 0 0 20px rgb(0, 138, 195);
+}
+
+.datepicker tbody td {
+    width: 32px;
+    height: 32px;
+    min-width: auto;
+    min-height: auto;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 20px;
+    text-align: center;
+    color: #000;
+    border-radius: 4px;
+}
+
+.table-condensed {
+    text-align: center;
+    width: 100%;
+}
+
+.datepicker tbody td:hover {
+    background-color: #cecece;
+    color: black;
+}
+
+.datepicker tbody td.active {
+    background-color: rgb(0, 138, 195);
+    color: white;
+}
+
+.datepicker {
+    width: 300px;
 }

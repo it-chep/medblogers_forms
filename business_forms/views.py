@@ -7,8 +7,8 @@ from django.urls import reverse
 from django.views.generic import TemplateView
 from django.conf import settings
 
-from business_forms.forms import MedblogersPreEntryForm
-from business_forms.models import BusinessForm, MedblogersPreEntry
+from business_forms.forms import MedblogersPreEntryForm, NationalBlogersAssociationForm
+from business_forms.models import BusinessForm, MedblogersPreEntry, NationalBlogersAssociation
 from business_forms.utils import format_phone_number, get_site_url
 
 
@@ -53,7 +53,6 @@ class MedblogersPreEntryView(TemplateView, BaseForm):
             form.save()
             self.call_api_method(form.cleaned_data["name"], form.cleaned_data["phone"])
             result.update({"success": True, "redirect_url": get_site_url() + reverse("spasibo_medbloger")})
-
         else:
             result.update({"errors": form.errors})
 
@@ -66,6 +65,52 @@ class SpasiboMedblogersPreEntryView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         content_type = ContentType.objects.get_for_model(MedblogersPreEntry)
+        context["business_form_settings"] = BusinessForm.objects.filter(content_type=content_type).first()
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
+
+class NationalBlogersAssociationView(TemplateView, BaseForm):
+    template_name = "business_forms/national_blogers_association_form.html"
+    form_class = NationalBlogersAssociationForm
+    form_method = "national_push_notification"
+    admins = [settings.ADMINS_CHAT_ID]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        content_type = ContentType.objects.get_for_model(NationalBlogersAssociation)
+        context["business_form_settings"] = BusinessForm.objects.filter(content_type=content_type).first()
+        context["national_form"] = self.form_class()
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        result = {"success": False}
+
+        if form.is_valid():
+            form.save()
+            self.call_api_method(form.cleaned_data["name"], form.cleaned_data["phone_number"])
+            result.update({"success": True, "redirect_url": get_site_url() + reverse("spasibo_national_medbloger")})
+
+        else:
+            result.update({"errors": form.errors})
+
+        return JsonResponse(result)
+
+
+class SpasiboNationalBlogersAssociationView(TemplateView):
+    template_name = "business_forms/spasibo_national_blogers_association_form.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        content_type = ContentType.objects.get_for_model(NationalBlogersAssociation)
         context["business_form_settings"] = BusinessForm.objects.filter(content_type=content_type).first()
         return context
 
