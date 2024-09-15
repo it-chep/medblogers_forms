@@ -1,5 +1,8 @@
+import logging
 import os
 from pathlib import Path
+
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -128,54 +131,70 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 TEST_TOKEN = os.getenv('TEST_TOKEN')
 WEBHOOK_URL = os.getenv('WEBHOOK_URL')
 
-# ELK
-LOGSTASH_HOST = os.getenv('LOGSTASH_HOST')
-LOGSTASH_PORT = os.getenv('LOGSTASH_PORT')
-LOGSTASH_TAG = os.getenv('LOGSTASH_TAG')
+
+class IgnoreStaticFilesFilter(logging.Filter):
+    def filter(self, record):
+        return not ('/static/' in record.getMessage())
+
+
+class VectorHTTPHandler(logging.Handler):
+    def __init__(self, vector_url):
+        logging.Handler.__init__(self)
+        self.vector_url = vector_url
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        headers = {'Content-Type': 'application/json'}
+        try:
+            requests.post(self.vector_url, data=log_entry, headers=headers)
+        except Exception as e:
+            print(f"Error sending log to Vector: {e}")
+
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'simple': {
-            'format': '%(levelname)s %(message)s'
+        'vector': {
+            'format': '{"timestamp": "%(asctime)s", "level": "%(levelname)s", "message": "%(message)s", "module": "%(module)s"}',
+        },
+    },
+    'filters': {
+        'ignore_static': {
+            '()': IgnoreStaticFilesFilter,
         },
     },
     'handlers': {
-        'console': {
+        'vector_http': {
             'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple'
+            'class': 'medblogers_forms.settings.VectorHTTPHandler',
+            'vector_url': 'http://localhost:8686',
+            'formatter': 'vector',
+            'filters': ['ignore_static'],
         },
-        'logstash': {
-            'level': 'INFO',
-            'class': 'logstash.TCPLogstashHandler',
-            'host': LOGSTASH_HOST,
-            'port': LOGSTASH_PORT,
-            'version': 1,
-            'message_type': LOGSTASH_TAG,
-            'fqdn': False,
-            'tags': ['django', LOGSTASH_TAG],
-        },
+    },
+    'root': {
+        'handlers': ['vector_http'],
+        'level': 'INFO',
     },
     'loggers': {
         'django': {
-            'handlers': ['logstash'],
+            'handlers': ['vector_http'],
             'level': 'INFO',
             'propagate': True,
         },
         'django.request': {
-            'handlers': ['logstash'],
+            'handlers': ['vector_http'],
             'level': 'INFO',
             'propagate': True,
         },
         'django.db.backends': {
-            'handlers': ['logstash'],
+            'handlers': ['vector_http'],
             'level': 'ERROR',
             'propagate': False,
         },
         'django.security': {
-            'handlers': ['logstash'],
+            'handlers': ['vector_http'],
             'level': 'INFO',
             'propagate': False,
         },
