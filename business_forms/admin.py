@@ -8,13 +8,13 @@ from business_forms.models import MedblogersPreEntry, BusinessForm, Nastavniches
 class MedblogersPreEntryAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'timestamp', 'colored_status', 'name', 'email', 'phone', 'formatted_tg_username_link',
-        'formatted_tg_phone_link', 'formatted_instagram_link', 'description'
+        'formatted_tg_phone_link', 'formatted_instagram_link', 'formatted_wa_link', 'description'
     )
     list_filter = ('status', 'timestamp')
 
     readonly_fields = (
         'name', 'email', 'phone', 'formatted_tg_username_link', 'formatted_tg_phone_link', 'formatted_instagram_link',
-        'tg_username', 'instagram_username', 'policy_agreement'
+        'formatted_wa_link', 'tg_username', 'instagram_username', 'policy_agreement'
     )
 
     def has_add_permission(self, request):

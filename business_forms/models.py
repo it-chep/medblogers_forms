@@ -51,6 +51,10 @@ class BaseModelForm:
         return f"https://t.me/{tg_username}"
 
     @property
+    def wa_link(self):
+        return f"https://wa.me/{self.phone}"
+
+    @property
     def tg_phone_link(self):
         return f"https://t.me/{format_phone_number(self.phone)}"
 
@@ -63,6 +67,10 @@ class BaseModelForm:
     def formatted_tg_phone_link(self):
         return format_html("<a href=\"{}\" target=\"_blank\">{}</a>", self.tg_phone_link, 'Написать человеку')
 
+    def formatted_wa_link(self):
+        return format_html("<a href=\"{}\" target=\"_blank\">{}</a>", self.wa_link, 'Написать человеку')
+
+    formatted_wa_link.short_description = 'Ссылка на Whatsapp'
     formatted_instagram_link.short_description = 'Ссылка на instagram'
     formatted_tg_username_link.short_description = 'Ссылка TG сформированная по никнейму'
     formatted_tg_phone_link.short_description = 'Ссылка TG сформированная по номеру телефона'
