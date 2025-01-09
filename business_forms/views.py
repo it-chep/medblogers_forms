@@ -16,15 +16,10 @@ class BaseForm:
     form_method = ""
     client_id = 0
 
-    def call_api_method(self, name, phone_number):
-        formatted_phone = format_phone_number(phone_number)
+    def call_api_method(self, data: dict):
         for admin_id in self.admins:
-            data = {
-                "message": self.form_method,
-                "client_id": admin_id,
-                "doctor_name": name,
-                "doctor_phone": formatted_phone,
-            }
+            data["message"] = self.form_method
+            data["client_id"] = admin_id
             requests.post(settings.SALEBOT_API_URL, json=data)
 
 
@@ -50,8 +45,17 @@ class MedblogersPreEntryView(TemplateView, BaseForm):
         result = {"success": False}
 
         if form.is_valid():
-            form.save()
-            self.call_api_method(form.cleaned_data["name"], form.cleaned_data["phone"])
+            instance = form.save()
+            data = {
+                "doctor_instagram_link": instance.instagram_link,
+                "doctor_tg_phone_link": instance.tg_phone_link,
+                "doctor_tg_username_link": instance.tg_username_link,
+                "doctor_tg_username": instance.tg_username,
+                "doctor_name": instance.name,
+                "doctor_phone": format_phone_number(instance.phone),
+                "doctor_wa_link": instance.wa_link
+            }
+            self.call_api_method(data)
             result.update({"success": True, "redirect_url": get_site_url() + reverse("spasibo_medbloger")})
         else:
             result.update({"errors": form.errors})
