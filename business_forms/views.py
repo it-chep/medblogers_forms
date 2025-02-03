@@ -12,6 +12,10 @@ from business_forms.models import BusinessForm, MedblogersPreEntry, NationalBlog
 from business_forms.utils import format_phone_number, get_site_url
 
 
+def health_check(request):
+    return JsonResponse({"status": "ok"}, status=200)
+
+
 class BaseForm:
     form_method = ""
     client_id = 0
