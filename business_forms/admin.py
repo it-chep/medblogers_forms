@@ -8,7 +8,7 @@ from business_forms.models import MedblogersPreEntry, BusinessForm, Nastavniches
 class MedblogersPreEntryAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'timestamp', 'colored_status', 'name', 'email', 'phone', 'formatted_tg_username_link',
-        'formatted_tg_phone_link', 'formatted_instagram_link', 'formatted_wa_link', 'description'
+        'formatted_tg_phone_link', 'formatted_instagram_link', 'formatted_wa_link', 'description', 'is_in_mailing_list'
     )
     list_filter = ('status', 'timestamp')
 

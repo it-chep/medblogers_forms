@@ -117,6 +117,8 @@ class MedblogersPreEntry(models.Model, BaseModelForm):
 
     description = models.TextField(verbose_name="Комментарий менеджера", null=True, blank=True)
 
+    is_in_mailing_list = models.BooleanField(verbose_name="Есть ли в рассылке", null=False, default=False)
+
     def colored_status(self):
         color = 'black'
         background_color = 'white'
