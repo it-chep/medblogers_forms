@@ -39,6 +39,9 @@ a {
     color: rgb(0, 138, 195);
 }
 
+* {
+    box-sizing: border-box;
+}
 
 .logo img {
     height: 50px;
@@ -299,6 +302,7 @@ input {
     display: -webkit-flex;
     display: flex;
     position: relative;
+    justify-content: center;
 }
 
 .submit_text {
@@ -401,16 +405,11 @@ input.checkbox {
     border: 1px solid rgb(217, 48, 37);
 }
 
-@media (max-width: 365px) {
-    .description_container_header_text {
-        font-size: 23pt;
-    }
-}
 
 .radio-button-container {
     display: flex;
-    align-items: center;
-    gap: 24px;
+    align-items: flex-start;
+    flex-direction: column;
 }
 
 .radio-button {
@@ -430,7 +429,6 @@ input.checkbox {
     display: inline-block;
     padding-left: 38px;
     margin-bottom: 10px;
-    width: 80px;
     position: relative;
     font-weight: 500;
     font-size: 12pt;
@@ -498,4 +496,171 @@ input.checkbox {
 
 .datepicker {
     width: 300px;
+}
+
+.zero_to_ten_choices_container {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+}
+
+.zero_to_ten_choices_container .left_text {
+    text-align: center;
+    width: 160px;
+}
+
+.zero_to_ten_choices_container .right_text {
+    text-align: center;
+}
+
+.radio-button__label_0_10 {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+}
+
+.radio-button__label_0_10 .radio-button__custom {
+    position: unset;
+}
+
+#field_inline_item_container_marketing_type {
+    height: 245px;
+
+    .field_item_input_container {
+        height: 147px;
+    }
+}
+
+#field_inline_item_container_average_income {
+    height: 410px;
+
+    .field_item_input_container {
+        height: 285px;
+    }
+}
+
+#field_inline_item_container_medblog {
+    height: 210px;
+
+    .field_item_input_container {
+        height: 115px;
+    }
+}
+
+#field_inline_item_container_rate_of_employment {
+    height: 175px;
+
+    .field_item_input_container {
+        height: 70px;
+    }
+}
+
+#field_inline_item_container_how_warmed_up {
+    height: 195px;
+
+    .field_item_input_container {
+        height: 70px;
+    }
+}
+
+#field_inline_item_container_have_bought_products {
+    height: 185px;
+
+    .field_item_input_container {
+        height: 85px;
+    }
+}
+
+@media (max-width: 365px) {
+    .description_container_header_text {
+        font-size: 23pt;
+    }
+}
+
+@media (max-width: 480px) {
+    .description_container_header_text {
+        font-size: 23pt;
+    }
+
+    #field_inline_item_container_marketing_type {
+        height: 250px;
+
+        .field_item_input_container {
+            height: 154px;
+        }
+    }
+
+    #field_inline_item_container_average_income {
+        height: 410px;
+
+        .field_item_input_container {
+            height: 290px;
+        }
+    }
+
+    #field_inline_item_container_medblog {
+        height: 265px;
+
+        .field_item_input_container {
+            height: 165px;
+        }
+    }
+
+    .full_width {
+        justify-content: center !important;
+    }
+
+    #field_inline_item_container_rate_of_employment {
+        height: 705px;
+
+        .field_item_input_container {
+            height: 585px;
+        }
+    }
+
+    #field_inline_item_container_how_warmed_up {
+        height: 735px;
+
+        .field_item_input_container {
+            height: 585px;
+        }
+    }
+
+    #field_inline_item_container_have_bought_products {
+        height: 200px;
+    }
+
+    .zero_to_ten_choices_container {
+        align-items: center;
+    }
+
+    .radio-button__label_0_10 {
+        flex-direction: row;
+        gap: 10px;
+        margin: 10px;
+        justify-content: center;
+    }
+
+    .zero_to_ten_choices_container {
+        flex-direction: column;
+    }
+
+    .submit_button {
+        line-height: unset;
+        width: 200px;
+        padding: 10px;
+    }
+
+    .buttons_inline_container {
+        align-items: center;
+    }
+
+    #id_have_bought_products {
+        width: auto;
+    }
+
+    .input_container input:focus ~ .line {
+        width: 100%;
+        left: 0;
+    }
 }

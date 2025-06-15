@@ -5,6 +5,8 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
+from clients.sheets.client import SpreadsheetDiagnostyClient
+
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -122,14 +124,21 @@ SALEBOT_API_URL = f"https://chatter.salebot.pro/api/{os.environ.get('SALEBOT_API
 
 MAIN_ADMIN_ID = os.environ.get("MAIN_ADMIN_ID")
 ADMINS_CHAT_ID = os.environ.get("ADMINS_CHAT_ID")
+DIAGNOSTY_CHAT_ID = os.environ.get("DIAGNOSTY_CHAT_ID")
 TEST_ADMIN_ID = os.environ.get("TEST_ADMIN_ID")
 
 ALERT_CHAT_ID = os.environ.get("ALERT_CHAT_ID")
+
+# SHEETS
+SERVICE_ACCOUNT_FILE = os.getenv('SERVICE_ACCOUNT_FILE')
+SPREADSHEET_ID = os.getenv('SPREADSHEET_ID')
 
 # BOT CONFIG
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 TEST_TOKEN = os.getenv('TEST_TOKEN')
 WEBHOOK_URL = os.getenv('WEBHOOK_URL')
+
+SPREADSHEET_DIAGNOSTIC_CLIENT = SpreadsheetDiagnostyClient()
 
 
 class IgnoreStaticFilesFilter(logging.Filter):
