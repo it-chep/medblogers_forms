@@ -1,5 +1,6 @@
 from django import forms
-from business_forms.models import MedblogersPreEntry, NationalBlogersAssociation, ExpressMedbloger,ZERO_TO_TEN_CHOICES
+from business_forms.models import MedblogersPreEntry, NationalBlogersAssociation, ExpressMedbloger, ZERO_TO_TEN_CHOICES, \
+    NeuroMedbloger
 
 
 class MedblogersPreEntryForm(forms.ModelForm):
@@ -162,3 +163,47 @@ class ExpressMedblogerForm(forms.ModelForm):
 
         self.fields['how_warmed_up'].choices = list(ZERO_TO_TEN_CHOICES)
         self.fields['rate_of_employment'].choices = list(ZERO_TO_TEN_CHOICES)
+
+
+class NeuroMedblogerForm(forms.ModelForm):
+    """Нейросети для медблога"""
+
+    class Meta:
+        model = NeuroMedbloger
+        fields = (
+            "name",
+            "city",
+            "speciality",
+            "phone",
+            "email",
+            "tg_username",
+            "level_of_use_neuro",
+            "your_questions",
+            "policy_agreement",
+        )
+        widgets = {
+            'speciality': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
+            'name': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
+            'city': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
+            'phone': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Мой ответ'}, ),
+            'tg_username': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
+            'policy_agreement': forms.CheckboxInput(attrs={'style': 'display:none'}),
+            'level_of_use_neuro': forms.RadioSelect,
+            'your_questions': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.required = True
+
+        self.fields['email'].error_messages.update({
+            'invalid': 'Введите правильный адрес электронной почты.'
+        })
+
+        self.fields['level_of_use_neuro'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+
+        self.fields['level_of_use_neuro'].choices = list(ZERO_TO_TEN_CHOICES)

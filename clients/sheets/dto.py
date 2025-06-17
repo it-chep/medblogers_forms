@@ -59,3 +59,35 @@ class ExpressMedblogerData:
             email=model_instance.email,
             policy_agreement=model_instance.policy_agreement
         )
+
+
+@dataclass
+class NeuroMedblogerData:
+    level_of_use_neuro: Optional[Literal["0", "1", "2", "3", "4", "5",
+    "6", "7", "8", "9", "10"]] = None
+
+    speciality: Optional[str] = None
+    your_questions: Optional[str] = None
+
+    name: Optional[str] = None
+    city: Optional[str] = None
+    tg_username: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
+
+    policy_agreement: bool = False
+
+    @classmethod
+    def from_model(cls, model_instance) -> NeuroMedblogerData:
+        """Создает датакласс из экземпляра модели Django"""
+        return cls(
+            level_of_use_neuro=model_instance.level_of_use_neuro,
+            speciality=model_instance.speciality,
+            your_questions=model_instance.your_questions,
+            name=model_instance.name,
+            city=model_instance.city,
+            tg_username=model_instance.tg_username,
+            phone=model_instance.phone,
+            email=model_instance.email,
+            policy_agreement=model_instance.policy_agreement
+        )

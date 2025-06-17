@@ -409,7 +409,7 @@ class ExpressMedbloger(models.Model, BaseModelForm):
         verbose_name="Как давно вы на меня подписаны и откуда узнали?",
         null=True, blank=True,
     )
-    top_questions= models.TextField(
+    top_questions = models.TextField(
         verbose_name="ТОП-1 или ТОП-3 вопроса по блогингу, которые вы хотите решить прямо сейчас:",
         null=True, blank=True,
     )
@@ -466,3 +466,50 @@ class ExpressMedbloger(models.Model, BaseModelForm):
     class Meta:
         verbose_name = "запись в анкете 'Экспресс-разбор медблога'"
         verbose_name_plural = "Анкета 'Экспресс-разбор медблога'"
+
+
+class NeuroMedbloger(models.Model, BaseModelForm):
+    name = models.CharField(
+        max_length=255, verbose_name="Ваше ФИО",
+        null=True, blank=True
+    )
+    city = models.CharField(
+        max_length=255, verbose_name="Город проживания в настоящий момент",
+        blank=True, null=True
+    )
+    speciality = models.CharField(
+        max_length=255, verbose_name="Специализация (гинеколог, невролог и т.д.)",
+        blank=True, null=True
+    )
+    phone = models.CharField(
+        max_length=255, verbose_name="Контактный телефон", null=True, blank=True
+    )
+    email = models.EmailField(
+        verbose_name="Адрес электронной почты", null=True, blank=True
+    )
+    tg_username = models.CharField(
+        max_length=255,
+        verbose_name="Ссылка на ваш личный телеграм (не канал) в формате https://t.me/readydoc или через @",
+        null=True, blank=True
+    )
+    level_of_use_neuro = models.CharField(
+        max_length=255, choices=ZERO_TO_TEN_CHOICES,
+        verbose_name="Оцените уровень вашего пользования нейросетями для создания контента",
+        null=True, blank=True,
+    )
+    your_questions = models.TextField(
+        verbose_name="Ваши вопросы",
+        null=True, blank=True,
+    )
+
+    policy_agreement = models.BooleanField(
+        verbose_name="Согласен с политикой обработки персональных данных",
+        default=False
+    )
+
+    def __str__(self):
+        return f"Анкета 'Нейросети для медблога': {self.name}"
+
+    class Meta:
+        verbose_name = "запись в анкете 'Нейросети для медблога'"
+        verbose_name_plural = "Анкета 'Нейросети для медблога'"

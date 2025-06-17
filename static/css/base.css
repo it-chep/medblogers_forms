@@ -571,6 +571,14 @@ input.checkbox {
     }
 }
 
+#field_inline_item_container_level_of_use_neuro {
+    height: 200px;
+
+    .field_item_input_container {
+        height: 77px;
+    }
+}
+
 @media (max-width: 365px) {
     .description_container_header_text {
         font-size: 23pt;
@@ -662,5 +670,13 @@ input.checkbox {
     .input_container input:focus ~ .line {
         width: 100%;
         left: 0;
+    }
+
+    #field_inline_item_container_level_of_use_neuro {
+        height: 705px;
+
+        .field_item_input_container {
+            height: 581px;
+        }
     }
 }

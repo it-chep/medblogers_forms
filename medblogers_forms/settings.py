@@ -5,7 +5,7 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
-from clients.sheets.client import SpreadsheetDiagnostyClient
+from clients.sheets.client import SpreadsheetClient
 
 load_dotenv()
 
@@ -122,23 +122,25 @@ ADMIN_TITLE = GRAPPELLI_ADMIN_TITLE = 'READY FORMS'
 
 SALEBOT_API_URL = f"https://chatter.salebot.pro/api/{os.environ.get('SALEBOT_API_KEY')}/callback"
 
+# Чаты для нотификации
 MAIN_ADMIN_ID = os.environ.get("MAIN_ADMIN_ID")
 ADMINS_CHAT_ID = os.environ.get("ADMINS_CHAT_ID")
 DIAGNOSTY_CHAT_ID = os.environ.get("DIAGNOSTY_CHAT_ID")
 TEST_ADMIN_ID = os.environ.get("TEST_ADMIN_ID")
-
+VOVA_CHAT_ID = os.environ.get("VOVA_CHAT_ID")
 ALERT_CHAT_ID = os.environ.get("ALERT_CHAT_ID")
 
 # SHEETS
 SERVICE_ACCOUNT_FILE = os.getenv('SERVICE_ACCOUNT_FILE')
-SPREADSHEET_ID = os.getenv('SPREADSHEET_ID')
+SPREADSHEET_DIAGNOSTY_ID = os.getenv('SPREADSHEET_DIAGNOSTY_ID')
+SPREADSHEET_NEURO_ID = os.getenv('SPREADSHEET_NEURO_ID')
 
 # BOT CONFIG
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 TEST_TOKEN = os.getenv('TEST_TOKEN')
 WEBHOOK_URL = os.getenv('WEBHOOK_URL')
 
-SPREADSHEET_DIAGNOSTIC_CLIENT = SpreadsheetDiagnostyClient()
+SPREADSHEET_CLIENT = SpreadsheetClient()
 
 
 class IgnoreStaticFilesFilter(logging.Filter):
