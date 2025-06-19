@@ -37,7 +37,6 @@ $(document).ready(function () {
         }
         const $fieldWarningContainer = $fieldInputContainer.find('.field_item_warning_container');
         $(this).on('blur', function () {
-
             if (!$(this).val() && $(this).prop('required')) {
                 $fieldInputContainer.addClass('invalid');
                 $line.addClass('invalid');
@@ -66,70 +65,82 @@ $(document).ready(function () {
         $fieldWarningContainer.css('display', 'none');
     });
 
-    $('.submit_button').click(function () {
+    // Обработчик для кнопки отправки
+    $('.submit_button').on('click', function (e) {
+        e.preventDefault();
+
+        const $button = $(this);
+        const $form = $('form');
+
+        $button.css({'opacity': '0.7', 'pointer-events': 'none'});
+        $button.find('.submit_text').text('Отправка...');
 
         let isValid = true;
-        const formData = $('form').serialize();
+        $form.find('[required]').each(function () {
+            const $field = $(this);
+            const $container = $field.closest('.field_inline_item_container');
 
-        $('form input[required]').each(function () {
-            const $fieldInputContainer = $(this).closest('.field_inline_item_container');
-            const $line = $(this).closest('.input_container').find('.line');
-            const $fieldWarningContainer = $fieldInputContainer.find('.field_item_warning_container');
-            if (!$(this).val() && $(this).prop('required')) {
-                $fieldInputContainer.addClass('invalid');
-                $line.addClass('invalid');
-                $fieldWarningContainer.css('display', 'block');
+            if (!$field.val() || ($field.is(':checkbox') && !$field.is(':checked'))) {
+                $container.addClass('invalid');
+                $container.find('.field_item_warning_container').show();
                 isValid = false;
-            } else {
-                $fieldInputContainer.removeClass('invalid');
-                $line.removeClass('invalid');
-                $fieldWarningContainer.css('display', 'none');
             }
         });
-        const $idPolicyPolicy = $('#id_policy_agreement')
-
-        if ($idPolicyPolicy.prop('checked') !== true) {
-            const $fieldInputContainer = $idPolicyPolicy.closest('.field_inline_item_container');
-            const $fieldWarningContainer = $fieldInputContainer.find('.field_item_warning_container');
-            $fieldInputContainer.addClass('invalid');
-            $fieldWarningContainer.css('display', 'block');
-            isValid = false;
-        }
-
-        formData["privacy_policy"] = $idPolicyPolicy.prop('checked')
 
         if (!isValid) {
-            return
+            resetButtonState($button);
+            return;
         }
-        if (isValid) {
-            $.ajax({
-                type: 'POST',
-                url: $('form').attr('action'),
-                data: formData,
-                dataType: 'json',
-                success: function (response) {
-                    if (response.success) {
-                        window.location.href = response.redirect_url;
-                    } else {
-                        $.each(response.errors, function (field, errors) {
-                            const $field = $('[name=' + field + ']');
-                            const $fieldInputContainer = $field.closest('.field_inline_item_container');
-                            const $fieldWarningContainer = $fieldInputContainer.find('.field_item_warning_container');
-                            $fieldInputContainer.addClass('invalid');
-                            $fieldWarningContainer.html('');
-                            $fieldWarningContainer.html(errors.join('<br>')).css('display', 'block');
-                        });
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error('Ошибка при отправке формы:', status, error);
+
+        $.ajax({
+            type: 'POST',
+            url: $form.attr('action'),
+            data: $form.serialize(),
+            dataType: 'json',
+            success: function (response) {
+                console.log('Ответ сервера:', response);
+                if (response.success) {
+                    window.location.href = response.redirect_url;
+                } else {
+                    showErrors(response.errors);
+                    resetButtonState($button);
                 }
-            });
-        }
+            },
+            error: function (xhr) {
+                console.error('Ошибка запроса:', xhr.responseText);
+                resetButtonState($button);
+            }
+        });
     });
 
+    // Сброс состояния кнопки
+    function resetButtonState($button) {
+        $button.css({'opacity': '1', 'pointer-events': 'auto'});
+        $button.find('.submit_text').text('Отправить');
+    }
+
+    // Показать ошибки
+    function showErrors(errors) {
+        if (!errors) return;
+
+        $('.field_item_warning_container').hide();
+
+        $.each(errors, function (fieldName, messages) {
+            const $field = $('[name="' + fieldName + '"]');
+            if ($field.length) {
+                const $container = $field.closest('.field_inline_item_container');
+                $container.addClass('invalid')
+                    .find('.field_item_warning_container')
+                    .html(messages.join('<br>'))
+                    .show();
+            }
+        });
+    }
+
+    // Обработчик для очистки формы
     $('.clear_inline_container').click(function () {
         $('form')[0].reset();
-        $('.input_container').removeClass('invalid');
+        $('.field_inline_item_container').removeClass('invalid');
+        $('.field_item_warning_container').hide();
     });
 });

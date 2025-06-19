@@ -69,6 +69,13 @@ $(document).ready(function () {
         }
     });
     $('.submit_button').click(function () {
+        e.preventDefault();
+
+        const $button = $(this);
+
+        $button.css({'opacity': '0.7', 'pointer-events': 'none'});
+        $button.find('.submit_text').text('Отправка...');
+
         let isValid = true;
         const formData = $('form').serializeArray();
         const formDataObj = {};
@@ -106,9 +113,6 @@ $(document).ready(function () {
             formDataObj["have_bought_products"] = $("#id_have_bought_products").val();
         }
 
-        console.log(formDataObj)
-
-
         // Проверка чекбокса политики
         const $idPolicyPolicy = $('#id_policy_agreement');
         if (!$idPolicyPolicy.prop('checked')) {
@@ -121,10 +125,9 @@ $(document).ready(function () {
         formDataObj["policy_agreement"] = $idPolicyPolicy.prop('checked');
 
         if (!isValid) {
+            resetButtonState($button);
             return false;
         }
-
-        console.log("Отправляемые данные:", formDataObj);
 
         $.ajax({
             type: 'POST',
@@ -150,13 +153,21 @@ $(document).ready(function () {
                             scrollTop: $firstErrorElement.offset().top - 100
                         }, 500);
                     }
+                    resetButtonState($button);
                 }
             },
             error: function (xhr, status, error) {
                 console.error('Ошибка при отправке формы:', status, error);
+                resetButtonState($button);
             }
         });
     });
+
+    // Сброс состояния кнопки
+    function resetButtonState($button) {
+        $button.css({'opacity': '1', 'pointer-events': 'auto'});
+        $button.find('.submit_text').text('Отправить');
+    }
 
     $('.clear_inline_container').click(function () {
         $('form')[0].reset();
