@@ -68,7 +68,7 @@ $(document).ready(function () {
                 .find('.field_item_warning_container').hide();
         }
     });
-    $('.submit_button').click(function () {
+    $('.submit_button').click(function (e) {
         e.preventDefault();
 
         const $button = $(this);
