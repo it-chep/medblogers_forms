@@ -76,20 +76,22 @@
                                                         <div class="left_text">
                                                             <span>Ничего не понимаю</span>
                                                         </div>
-                                                        {% for value, label in field.field.choices %}
-                                                            <div class="radio-button">
-                                                                <input type="radio" class="radio-button__input"
-                                                                       id="{{ field.name }}_{{ value }}"
-                                                                       name="{{ field.name }}" value="{{ value }}"
-                                                                       {% if field.value == value %}checked{% endif %}>
+                                                        <div class="wrapper_radio-button">
+                                                            {% for value, label in field.field.choices %}
+                                                                <div class="radio-button">
+                                                                    <input type="radio" class="radio-button__input"
+                                                                           id="{{ field.name }}_{{ value }}"
+                                                                           name="{{ field.name }}" value="{{ value }}"
+                                                                           {% if field.value == value %}checked{% endif %}>
 
-                                                                <label class="radio-button__label radio-button__label_0_10"
-                                                                       for="{{ field.name }}_{{ value }}">
-                                                                    <span>{{ label }}</span>
-                                                                    <span class="radio-button__custom"></span>
-                                                                </label>
-                                                            </div>
-                                                        {% endfor %}
+                                                                    <label class="radio-button__label radio-button__label_0_10"
+                                                                           for="{{ field.name }}_{{ value }}">
+                                                                        <span class="count">{{ label }}</span>
+                                                                        <span class="radio-button__custom"></span>
+                                                                    </label>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
                                                         <div class="right_text">
                                                             <span>Регулярно пользуюсь</span>
                                                         </div>
