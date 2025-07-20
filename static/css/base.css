@@ -31,7 +31,7 @@ body {
     align-items: center;
     margin: auto;
     max-width: 90vw;
-    width: 640px;
+    width: 720px;
 }
 
 a {
@@ -166,7 +166,6 @@ a {
 }
 
 .field_item_input {
-    height: 40px;
     position: relative;
     vertical-align: top;
 }
@@ -182,7 +181,7 @@ a {
 
 .field_item_input_inline {
     position: relative;
-    top: 14px;
+    margin-top: 14px;
 }
 
 .input_container {
@@ -199,13 +198,14 @@ input {
     color: rgb(32, 33, 36);
     border: unset;
     width: 300px;
+    max-width: 100%;
 }
 
 .line {
     background-color: rgba(0, 0, 0, .12);
     bottom: -2px;
     height: 1px;
-    width: 50%;
+    width: 100%;
 }
 
 .field_item_warning_container {
@@ -389,7 +389,8 @@ input {
 }
 
 .input_container input:focus ~ .line {
-    width: 50%;
+    width: 300px;
+    max-width: 100%;
     left: 0;
 }
 
@@ -408,6 +409,7 @@ input.checkbox {
 
 .radio-button-container {
     display: flex;
+    width: 100%;
     align-items: flex-start;
     flex-direction: column;
 }
@@ -416,6 +418,7 @@ input.checkbox {
     display: inline-block;
     position: relative;
     cursor: pointer;
+    width: 100%;
 }
 
 .radio-button__input {
@@ -426,7 +429,9 @@ input.checkbox {
 }
 
 .radio-button__label {
-    display: inline-block;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     padding-left: 38px;
     margin-bottom: 10px;
     position: relative;
@@ -438,9 +443,12 @@ input.checkbox {
     letter-spacing: 0;
 }
 
+.container_nowrap{
+    text-wrap: nowrap;
+}
+
 .radio-button__custom {
     position: absolute;
-    top: 0;
     left: 0;
     width: 20px;
     height: 20px;
@@ -500,16 +508,34 @@ input.checkbox {
 
 .zero_to_ten_choices_container {
     display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
     flex-direction: row;
     column-gap: 10px;
 }
 
 .zero_to_ten_choices_container .left_text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    width: 160px;
+    width: 130px;
+    min-width: 130px;
+}
+
+.wrapper_radio-button{
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .zero_to_ten_choices_container .right_text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 130px;
+    width: 130px;
     text-align: center;
 }
 
@@ -523,59 +549,34 @@ input.checkbox {
     position: unset;
 }
 
-#field_inline_item_container_marketing_type {
-    height: 245px;
-
-    .field_item_input_container {
-        height: 147px;
+@media (max-width: 740px) {
+    .zero_to_ten_choices_container{
+        flex-direction: column;
+        gap: 12px;
     }
-}
 
-#field_inline_item_container_average_income {
-    height: 410px;
-
-    .field_item_input_container {
-        height: 285px;
+    .radio-button__label_0_10 {
+        flex-direction: row;
+        gap: 6px;
+        margin: 10px;
+        justify-content: center;
     }
-}
 
-#field_inline_item_container_medblog {
-    height: 210px;
-
-    .field_item_input_container {
-        height: 115px;
+    .zero_to_ten_choices_container .left_text, .zero_to_ten_choices_container .right_text {
+        width: 100%;
     }
-}
 
-#field_inline_item_container_rate_of_employment {
-    height: 175px;
-
-    .field_item_input_container {
-        height: 70px;
+    .wrapper_radio-button{
+        flex-direction: column;
+        gap: 0px;
     }
-}
 
-#field_inline_item_container_how_warmed_up {
-    height: 195px;
-
-    .field_item_input_container {
-        height: 70px;
-    }
-}
-
-#field_inline_item_container_have_bought_products {
-    height: 185px;
-
-    .field_item_input_container {
-        height: 85px;
-    }
-}
-
-#field_inline_item_container_level_of_use_neuro {
-    height: 200px;
-
-    .field_item_input_container {
-        height: 77px;
+    .radio-button__label_0_10 {
+        .count{
+            display: flex;
+            justify-content: center;
+            width: 24px;
+        }
     }
 }
 
@@ -590,64 +591,15 @@ input.checkbox {
         font-size: 23pt;
     }
 
-    #field_inline_item_container_marketing_type {
-        height: 250px;
-
-        .field_item_input_container {
-            height: 154px;
-        }
-    }
-
-    #field_inline_item_container_average_income {
-        height: 410px;
-
-        .field_item_input_container {
-            height: 290px;
-        }
-    }
-
-    #field_inline_item_container_medblog {
-        height: 280px;
-
-        .field_item_input_container {
-            height: 165px;
-        }
-    }
-
     .full_width {
         justify-content: center !important;
-    }
-
-    #field_inline_item_container_rate_of_employment {
-        height: 705px;
-
-        .field_item_input_container {
-            height: 585px;
-        }
-    }
-
-    #field_inline_item_container_how_warmed_up {
-        height: 735px;
-
-        .field_item_input_container {
-            height: 585px;
-        }
-    }
-
-    #field_inline_item_container_have_bought_products {
-        height: 200px;
     }
 
     .zero_to_ten_choices_container {
         align-items: center;
     }
 
-    .radio-button__label_0_10 {
-        flex-direction: row;
-        gap: 10px;
-        margin: 10px;
-        justify-content: center;
-    }
+
 
     .zero_to_ten_choices_container {
         flex-direction: column;
@@ -672,11 +624,4 @@ input.checkbox {
         left: 0;
     }
 
-    #field_inline_item_container_level_of_use_neuro {
-        height: 705px;
-
-        .field_item_input_container {
-            height: 581px;
-        }
-    }
 }
