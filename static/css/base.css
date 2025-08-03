@@ -443,7 +443,7 @@ input.checkbox {
     letter-spacing: 0;
 }
 
-.container_nowrap{
+.container_nowrap {
     text-wrap: nowrap;
 }
 
@@ -524,7 +524,7 @@ input.checkbox {
     min-width: 130px;
 }
 
-.wrapper_radio-button{
+.wrapper_radio-button {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -550,7 +550,7 @@ input.checkbox {
 }
 
 @media (max-width: 740px) {
-    .zero_to_ten_choices_container{
+    .zero_to_ten_choices_container {
         flex-direction: column;
         gap: 12px;
     }
@@ -566,18 +566,78 @@ input.checkbox {
         width: 100%;
     }
 
-    .wrapper_radio-button{
+    .wrapper_radio-button {
         flex-direction: column;
         gap: 0px;
     }
 
     .radio-button__label_0_10 {
-        .count{
+        .count {
             display: flex;
             justify-content: center;
             width: 24px;
         }
     }
+}
+
+.many-and-another-container {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+
+.many-checkbox-button {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+}
+
+.many-checkbox-button__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.many-checkbox-button__label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-left: 38px;
+    margin-bottom: 10px;
+    position: relative;
+    font-weight: 500;
+    font-size: 12pt;
+    color: rgb(32, 33, 36);
+    cursor: pointer;
+    line-height: 1.5;
+    letter-spacing: 0;
+}
+
+.many-checkbox-button__custom {
+    position: absolute;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    border: 1px solid #555;
+    transition: all 0.3s ease;
+}
+
+.many-checkbox-button__input:checked + .many-checkbox-button__label .many-checkbox-button__custom {
+    background-color: rgb(0, 138, 195);
+    border-color: transparent;
+    transform: scale(0.8);
+    box-shadow: 0 0 20px rgb(0, 138, 195);
+}
+
+.many-checkbox-button__label:hover .many-checkbox-button__custom {
+    transform: scale(1.2);
+    border-color: rgb(0, 138, 195);
+    box-shadow: 0 0 20px rgb(0, 138, 195);
 }
 
 @media (max-width: 365px) {
@@ -598,7 +658,6 @@ input.checkbox {
     .zero_to_ten_choices_container {
         align-items: center;
     }
-
 
 
     .zero_to_ten_choices_container {

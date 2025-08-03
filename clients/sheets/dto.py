@@ -91,3 +91,29 @@ class NeuroMedblogerData:
             email=model_instance.email,
             policy_agreement=model_instance.policy_agreement
         )
+
+
+@dataclass
+class SmmSpecialistData:
+    specialization: Optional[str] = None
+    social_networks: Optional[str] = None
+    your_experience: Optional[str] = None
+    last_collaboration_period: Optional[str] = None
+    satisfied_of_results: Optional[str] = None
+    positive_specialist_contact: Optional[str] = None
+    negative_specialist_contact: Optional[str] = None
+    user_contact: Optional[str] = None
+
+    @classmethod
+    def from_model(cls, model_instance) -> SmmSpecialistData:
+        """Создает датакласс из экземпляра модели Django"""
+        return cls(
+            specialization=model_instance.specialization,
+            social_networks=model_instance.social_networks,
+            your_experience=model_instance.your_experience,
+            last_collaboration_period=model_instance.get_last_collaboration_period_display(),
+            satisfied_of_results=model_instance.get_satisfied_of_results_display(),
+            positive_specialist_contact=model_instance.positive_specialist_contact,
+            negative_specialist_contact=model_instance.negative_specialist_contact,
+            user_contact=model_instance.user_contact
+        )
