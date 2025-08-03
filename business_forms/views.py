@@ -1,4 +1,5 @@
 import ast
+import json
 
 import requests
 from django.contrib.contenttypes.models import ContentType
@@ -271,35 +272,36 @@ class SMMView(TemplateView, BaseForm):
             social_networks_str = form.cleaned_data['social_networks']
             try:
                 social_networks_list = ast.literal_eval(social_networks_str)
+                social_networks_list = json.loads(social_networks_list[0])
             except (ValueError, SyntaxError):
                 social_networks_list = []
+            if len(form.data.get("social_networks_another", "")) != 0:
+                social_networks_list.append(form.data.get("social_networks_another", ""))
 
             selected_social_networks = [
                 SMMSpecialists.SOCIAL_NETWORKS_MAPPING.get(value, value)
                 for value in social_networks_list
-                if value in SMMSpecialists.SOCIAL_NETWORKS_MAPPING
             ]
             instance.social_networks = ', '.join(selected_social_networks)
 
             your_experience_str = form.cleaned_data['your_experience']
             try:
                 your_experience_list = ast.literal_eval(your_experience_str)
+                your_experience_list = json.loads(your_experience_list[0])
             except (ValueError, SyntaxError):
                 your_experience_list = []
+            if len(form.data.get("your_experience_another", "")) != 0:
+                your_experience_list.append(form.data.get("your_experience_another", ""))
+
             selected_experiences = [
                 SMMSpecialists.YOUR_EXPERIENCE_MAPPING.get(value, value)
                 for value in your_experience_list
             ]
-
             instance.your_experience = ', '.join(selected_experiences)
-
-            if 'other' in form.cleaned_data['social_networks'] and form.cleaned_data.get('social_networks_other'):
-                other_value = form.cleaned_data['social_networks_other']
-                instance.social_networks += f", {other_value}" if instance.social_networks else other_value
 
             instance.save()
 
-            data = {"doctor_tg_username": instance.tg_username_link,}
+            data = {"doctor_tg_username": instance.tg_username_link, }
             self.call_api_method(data)
             self.client.create_smm_row(SmmSpecialistData.from_model(instance))
             result.update({"success": True, "redirect_url": get_site_url() + reverse("spasibo_smm")})

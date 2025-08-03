@@ -247,4 +247,6 @@ class SMMForm(forms.ModelForm):
         self.fields['satisfied_of_results'].choices = list(SMMSpecialists.SATISFIED_OF_RESULT_CHOICES)
 
         self.fields['social_networks'].choices = list(SMMSpecialists.SOCIAL_NETWORKS_CHOICES)
+        self.fields['social_networks'].required = False
         self.fields['your_experience'].choices = list(SMMSpecialists.YOUR_EXPERIENCE_CHOICES)
+        self.fields['your_experience'].required = False
