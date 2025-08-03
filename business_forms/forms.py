@@ -1,6 +1,6 @@
 from django import forms
 from business_forms.models import MedblogersPreEntry, NationalBlogersAssociation, ExpressMedbloger, ZERO_TO_TEN_CHOICES, \
-    NeuroMedbloger
+    NeuroMedbloger, SMMSpecialists
 
 
 class MedblogersPreEntryForm(forms.ModelForm):
@@ -207,3 +207,44 @@ class NeuroMedblogerForm(forms.ModelForm):
         })
 
         self.fields['level_of_use_neuro'].choices = list(ZERO_TO_TEN_CHOICES)
+
+
+class SMMForm(forms.ModelForm):
+    """Работали с помощником по блогу? Поделитесь опытом"""
+
+    class Meta:
+        model = SMMSpecialists
+        fields = (
+            "specialization",
+            "social_networks",
+            "your_experience",
+            "last_collaboration_period",
+            "satisfied_of_results",
+            "positive_specialist_contact",
+            "negative_specialist_contact",
+            "user_contact",
+        )
+        widgets = {
+            'specialization': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
+            'last_collaboration_period': forms.RadioSelect,
+            'satisfied_of_results': forms.RadioSelect,
+            'positive_specialist_contact': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
+            'negative_specialist_contact': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
+            'user_contact': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
+            'social_networks': forms.CheckboxSelectMultiple,
+            'your_experience': forms.CheckboxSelectMultiple,
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.error_messages.update({
+                'required': 'Обязательное поле'
+            })
+            field.required = True
+
+        self.fields['last_collaboration_period'].choices = list(SMMSpecialists.LAST_COLLABORATION_PERIOD_CHOICES)
+        self.fields['satisfied_of_results'].choices = list(SMMSpecialists.SATISFIED_OF_RESULT_CHOICES)
+
+        self.fields['social_networks'].choices = list(SMMSpecialists.SOCIAL_NETWORKS_CHOICES)
+        self.fields['your_experience'].choices = list(SMMSpecialists.YOUR_EXPERIENCE_CHOICES)

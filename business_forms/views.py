@@ -1,3 +1,5 @@
+import ast
+
 import requests
 from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
@@ -8,11 +10,11 @@ from django.views.generic import TemplateView
 from django.conf import settings
 
 from business_forms.forms import MedblogersPreEntryForm, NationalBlogersAssociationForm, ExpressMedblogerForm, \
-    NeuroMedblogerForm
+    NeuroMedblogerForm, SMMForm
 from business_forms.models import BusinessForm, MedblogersPreEntry, NationalBlogersAssociation, ExpressMedbloger, \
-    NeuroMedbloger
+    NeuroMedbloger, SMMSpecialists
 from business_forms.utils import format_phone_number, get_site_url
-from clients.sheets.dto import ExpressMedblogerData, NeuroMedblogerData
+from clients.sheets.dto import ExpressMedblogerData, NeuroMedblogerData, SmmSpecialistData
 
 
 def health_check(request):
@@ -233,6 +235,86 @@ class SpasiboNeuroMedblogerView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         content_type = ContentType.objects.get_for_model(NeuroMedbloger)
+        context["business_form_settings"] = BusinessForm.objects.filter(content_type=content_type).first()
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
+
+class SMMView(TemplateView, BaseForm):
+    template_name = 'business_forms/smm_form.html'
+    form_class = SMMForm
+    form_method = "smm_push_notification"
+    admins = [settings.VOVA_CHAT_ID]
+    client = settings.SPREADSHEET_CLIENT
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        content_type = ContentType.objects.get_for_model(SMMSpecialists)
+        context["business_form_settings"] = BusinessForm.objects.filter(content_type=content_type).first()
+        context["medblogers_form"] = self.form_class()
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        result = {"success": False}
+
+        if form.is_valid():
+            instance = form.save(commit=False)
+
+            social_networks_str = form.cleaned_data['social_networks']
+            try:
+                social_networks_list = ast.literal_eval(social_networks_str)
+            except (ValueError, SyntaxError):
+                social_networks_list = []
+
+            selected_social_networks = [
+                SMMSpecialists.SOCIAL_NETWORKS_MAPPING.get(value, value)
+                for value in social_networks_list
+                if value in SMMSpecialists.SOCIAL_NETWORKS_MAPPING
+            ]
+            instance.social_networks = ', '.join(selected_social_networks)
+
+            your_experience_str = form.cleaned_data['your_experience']
+            try:
+                your_experience_list = ast.literal_eval(your_experience_str)
+            except (ValueError, SyntaxError):
+                your_experience_list = []
+            selected_experiences = [
+                SMMSpecialists.YOUR_EXPERIENCE_MAPPING.get(value, value)
+                for value in your_experience_list
+            ]
+
+            instance.your_experience = ', '.join(selected_experiences)
+
+            if 'other' in form.cleaned_data['social_networks'] and form.cleaned_data.get('social_networks_other'):
+                other_value = form.cleaned_data['social_networks_other']
+                instance.social_networks += f", {other_value}" if instance.social_networks else other_value
+
+            instance.save()
+
+            data = {"doctor_tg_username": instance.tg_username_link,}
+            self.call_api_method(data)
+            self.client.create_smm_row(SmmSpecialistData.from_model(instance))
+            result.update({"success": True, "redirect_url": get_site_url() + reverse("spasibo_smm")})
+        else:
+            result.update({"errors": form.errors})
+
+        return JsonResponse(result)
+
+
+class SpasiboSMMView(TemplateView):
+    template_name = 'business_forms/spasibo_smm_from.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        content_type = ContentType.objects.get_for_model(SMMSpecialists)
         context["business_form_settings"] = BusinessForm.objects.filter(content_type=content_type).first()
         return context
 

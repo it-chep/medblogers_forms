@@ -105,9 +105,11 @@
                                                 {% elif field.name == "have_bought_products" %}
                                                     <div class="radio-button-container">
                                                         <div class="radio-button">
-                                                            <input type="radio" class="radio-button__input" id="radio_have_bought_products_no"
+                                                            <input type="radio" class="radio-button__input"
+                                                                   id="radio_have_bought_products_no"
                                                                    name="radio-group-1">
-                                                            <label class="radio-button__label" for="radio_have_bought_products_no">
+                                                            <label class="radio-button__label"
+                                                                   for="radio_have_bought_products_no">
                                                                 <span class="radio-button__custom"></span>
                                                                 Нет
                                                             </label>
@@ -115,11 +117,14 @@
                                                     </div>
                                                     <div class="radio-button-container">
                                                         <div class="radio-button">
-                                                            <input type="radio" class="radio-button__input" id="radio_have_bought_products_another"
+                                                            <input type="radio" class="radio-button__input"
+                                                                   id="radio_have_bought_products_another"
                                                                    name="radio-group-1">
-                                                            <label class="radio-button__label" for="radio_have_bought_products_another">
-                                                                <span class="container_nowrap"><span class="radio-button__custom"></span>
-                                                                Другое:</span>  {{ field }}
+                                                            <label class="radio-button__label"
+                                                                   for="radio_have_bought_products_another">
+                                                                <span class="container_nowrap"><span
+                                                                        class="radio-button__custom"></span>
+                                                                Другое:</span> {{ field }}
                                                             </label>
                                                         </div>
                                                     </div>
@@ -225,5 +230,6 @@
                     </div>
                 </div>
             </div>
+        </div>
     </form>
 {% endblock %}

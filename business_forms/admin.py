@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Group
 
 from business_forms.models import MedblogersPreEntry, BusinessForm, NastavnichestvoPreEntry, ExpressMedbloger, \
-    NeuroMedbloger
+    NeuroMedbloger, SMMSpecialists
 
 
 class MedblogersPreEntryAdmin(admin.ModelAdmin):
@@ -81,10 +81,25 @@ class BusinessFormAdmin(admin.ModelAdmin):
         return form
 
 
+class SMMSpecialistsAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'specialization', 'user_contact',
+        'formatted_user_contact',
+    )
+    readonly_fields = ('formatted_user_contact',)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
 admin.site.register(MedblogersPreEntry, MedblogersPreEntryAdmin)
 admin.site.register(NastavnichestvoPreEntry, NastavnichestvoPreEntryAdmin)
 admin.site.register(BusinessForm, BusinessFormAdmin)
 admin.site.register(ExpressMedbloger, ExpressMedblogerAdmin)
 admin.site.register(NeuroMedbloger, NeuroMedblogerAdmin)
+admin.site.register(SMMSpecialists, SMMSpecialistsAdmin)
 
 admin.site.unregister(Group)

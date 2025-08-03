@@ -1,8 +1,10 @@
+import datetime
+
 import gspread
 from google.oauth2.service_account import Credentials
 from django.conf import settings
 
-from clients.sheets.dto import ExpressMedblogerData, NeuroMedblogerData
+from clients.sheets.dto import ExpressMedblogerData, NeuroMedblogerData, SmmSpecialistData
 
 
 class SpreadsheetClient:
@@ -16,6 +18,7 @@ class SpreadsheetClient:
     def _init_spreadsheets_id(self):
         self.diagnosty_speadsheet_id = settings.SPREADSHEET_DIAGNOSTY_ID
         self.neuro_speadsheet_id = settings.SPREADSHEET_NEURO_ID
+        self.smm_spreadsheet_id = settings.SPREADSHEET_SMM_ID
 
     def create_diagnosty_row(self, data: ExpressMedblogerData):
         sheet = self.client.open_by_key(self.diagnosty_speadsheet_id).worksheet("Предзапись на всё")
@@ -36,5 +39,16 @@ class SpreadsheetClient:
             [
                 f'{data.name}', f'{data.phone}', f'{data.email}', f'{data.tg_username}', f'{data.speciality}',
                 f'{data.city}', f'{data.level_of_use_neuro}', f'{data.your_questions}'
+            ]
+        )
+
+    def create_smm_row(self, data: SmmSpecialistData):
+        sheet = self.client.open_by_key(self.smm_spreadsheet_id).worksheet("АНКЕТА СММ специалисты")
+        sheet.append_row(
+            [
+                f'{datetime.datetime.now().strftime("%d.%m.%Y")}', f'{data.user_contact}', f'{data.specialization}',
+                f'{data.social_networks}', f'{data.your_experience}', f'{data.last_collaboration_period}',
+                f'{data.satisfied_of_results}', f'{data.positive_specialist_contact}',
+                f'{data.negative_specialist_contact}'
             ]
         )

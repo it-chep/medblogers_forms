@@ -513,3 +513,123 @@ class NeuroMedbloger(models.Model, BaseModelForm):
     class Meta:
         verbose_name = "запись в анкете 'Нейросети для медблога'"
         verbose_name_plural = "Анкета 'Нейросети для медблога'"
+
+
+class SMMSpecialists(models.Model):
+    LAST_COLLABORATION_PERIOD_CHOICES = (
+        ("3_month", "До 3 месяцев"),
+        ("3_6_month", "3-6 месяцев"),
+        ("1_year", "До года"),
+        ("More_1_year", "Более года"),
+    )
+
+    SATISFIED_OF_RESULT_CHOICES = (
+        ("all_good", "Всё было отлично, сотрудничество помогло решить задачи"),
+        ("50_50", "В целом неплохо, но есть нюансы"),
+        ("bad_exp", "Нет, ожидания не оправдались"),
+    )
+
+    SOCIAL_NETWORKS_CHOICES = (
+        ("Instagram", "Instagram"),
+        ("Telegram", "Telegram"),
+        ("VK", "VK"),
+        ("YouTube", "YouTube"),
+    )
+
+    YOUR_EXPERIENCE_CHOICES = (
+        ("yes_smm", "Да, СММ"),
+        ("yes_advertising_manager", "Да, менеджер по рекламе"),
+        ("yes_producer", "Да, продюсер"),
+        ("yes_designer", "Да, дизайнер"),
+        ("yes_marketolog", "Да, маркетолог"),
+        ("no_but_planning", "Нет, но думаю об этом"),
+        ("no_no_planning", "Нет и не планирую"),
+    )
+
+    SOCIAL_NETWORKS_MAPPING = {
+        "Instagram": "Instagram",
+        "Telegram": "Telegram",
+        "VK": "VK",
+        "YouTube": "YouTube",
+    }
+
+    YOUR_EXPERIENCE_MAPPING = {
+        "yes_smm": "Да, СММ",
+        "yes_advertising_manager": "Да, менеджер по рекламе",
+        "yes_producer": "Да, продюсер",
+        "yes_designer": "Да, дизайнер",
+        "yes_marketolog": "Да, маркетолог",
+        "no_but_planning": "Нет, но думаю об этом",
+        "no_no_planning": "Нет и не планирую",
+    }
+
+    specialization = models.CharField(
+        verbose_name="Ваша специализация", max_length=255,
+        null=True, blank=True,
+    )
+
+    # множественный выбор
+    social_networks = models.CharField(
+        verbose_name="В каких соцсетях вы ведёте блог?",
+        max_length=255,
+        null=True, blank=True,
+    )
+
+    # множественный выбор
+    your_experience = models.CharField(
+        verbose_name="Обращались ли вы за помощью к digital специалистам? (если нужной профессии нет в списке, напишите в последней строке)",
+        max_length=500,
+        db_column='your_experience',
+        null=True, blank=True,
+    )
+
+    last_collaboration_period = models.CharField(
+        verbose_name="Сколько продлилось ваше сотрудничество?",
+        max_length=255,
+        choices=LAST_COLLABORATION_PERIOD_CHOICES,
+        db_column='last_collaboration_period',
+        null=True, blank=True,
+    )
+
+    satisfied_of_results = models.CharField(
+        verbose_name="Довольны ли результатами?",
+        max_length=255,
+        choices=SATISFIED_OF_RESULT_CHOICES,
+        db_column='satisfied_of_results',
+        null=True, blank=True,
+    )
+
+    positive_specialist_contact = models.CharField(
+        verbose_name="Оставьте контакт на своего digital специалиста, если готовы его рекомендовать", max_length=500,
+        db_column='positive_specialist_contact',
+        null=True, blank=True,
+    )
+
+    negative_specialist_contact = models.CharField(
+        verbose_name="А в этом окне оставьте контакт digital специалиста, с которым НЕ рекомендуете сотрудничать",
+        max_length=500,
+        db_column='neg_specialist_contact',
+        null=True, blank=True,
+    )
+
+    user_contact = models.CharField(
+        verbose_name="Если вы готовы пообщаться с нами подробнее на тему СММ и подбора проверенных подрядчиков, оставьте свой телеграм через @ или ссылкой",
+        max_length=255,
+        db_column='user_contact',
+        null=True, blank=True,
+    )
+
+    def __str__(self):
+        return f"Анкета 'рекомендации SMM специалиста'"
+
+    class Meta:
+        verbose_name = "запись в анкете 'рекомендации SMM специалиста'"
+        verbose_name_plural = "Анкета 'рекомендации SMM специалиста'"
+
+    @property
+    def tg_username_link(self):
+        tg_username = self.user_contact.replace("@", '')
+        return f"https://t.me/{tg_username}"
+
+    def formatted_user_contact(self):
+        return format_html("<a href=\"{}\" target=\"_blank\">{}</a>", self.tg_username_link, 'Написать человеку')

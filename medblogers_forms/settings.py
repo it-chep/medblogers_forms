@@ -134,6 +134,7 @@ ALERT_CHAT_ID = os.environ.get("ALERT_CHAT_ID")
 SERVICE_ACCOUNT_FILE = os.getenv('SERVICE_ACCOUNT_FILE')
 SPREADSHEET_DIAGNOSTY_ID = os.getenv('SPREADSHEET_DIAGNOSTY_ID')
 SPREADSHEET_NEURO_ID = os.getenv('SPREADSHEET_NEURO_ID')
+SPREADSHEET_SMM_ID = os.getenv('SPREADSHEET_SMM_ID')
 
 # BOT CONFIG
 BOT_TOKEN = os.getenv('BOT_TOKEN')
@@ -146,68 +147,3 @@ SPREADSHEET_CLIENT = SpreadsheetClient()
 class IgnoreStaticFilesFilter(logging.Filter):
     def filter(self, record):
         return not ('/static/' in record.getMessage())
-
-
-# class VectorHTTPHandler(logging.Handler):
-#     def __init__(self, vector_url):
-#         logging.Handler.__init__(self)
-#         self.vector_url = vector_url
-#
-#     def emit(self, record):
-#         log_entry = self.format(record)
-#         headers = {'Content-Type': 'application/json'}
-#         try:
-#             requests.post(self.vector_url, data=log_entry, headers=headers)
-#         except Exception as e:
-#             print(f"Error sending log to Vector: {e}")
-
-
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'formatters': {
-#         'vector': {
-#             'format': '{"timestamp": "%(asctime)s", "level": "%(levelname)s", "message": "%(message)s", "module": "%(module)s"}',
-#         },
-#     },
-#     'filters': {
-#         'ignore_static': {
-#             '()': IgnoreStaticFilesFilter,
-#         },
-#     },
-#     'handlers': {
-#         'vector_http': {
-#             'level': 'INFO',
-#             'class': 'medblogers_forms.settings.VectorHTTPHandler',
-#             'vector_url': 'http://localhost:8686',
-#             'formatter': 'vector',
-#             'filters': ['ignore_static'],
-#         },
-#     },
-#     'root': {
-#         'handlers': ['vector_http'],
-#         'level': 'INFO',
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['vector_http'],
-#             'level': 'INFO',
-#             'propagate': True,
-#         },
-#         'django.request': {
-#             'handlers': ['vector_http'],
-#             'level': 'INFO',
-#             'propagate': True,
-#         },
-#         'django.db.backends': {
-#             'handlers': ['vector_http'],
-#             'level': 'ERROR',
-#             'propagate': False,
-#         },
-#         'django.security': {
-#             'handlers': ['vector_http'],
-#             'level': 'INFO',
-#             'propagate': False,
-#         },
-#     }
-# }
