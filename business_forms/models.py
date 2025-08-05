@@ -361,6 +361,7 @@ class ExpressMedbloger(models.Model, BaseModelForm):
         ("telegram", "Telegram"),
         ("bot", "Рассылка в боте"),
         ("email", "Рассылка на почте"),
+        ("meducation", "Блог Meducation")
     )
 
     MEDBLOG_CHOICES = (
@@ -371,7 +372,7 @@ class ExpressMedbloger(models.Model, BaseModelForm):
 
     marketing_type = models.CharField(
         max_length=255, choices=MARKETING_TYPE_CHOICES,
-        verbose_name="Вы увидели эту анкету у меня в",
+        verbose_name="Я увидел(а) эту анкету в:",
         null=True, blank=True
     )
     have_bought_products = models.CharField(
