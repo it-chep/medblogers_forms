@@ -30,6 +30,7 @@ class SpreadsheetClient:
                 f'{data.average_income}', f'{data.medblog}', f'{data.medblog_reason}', f'{data.medblog_complexity}',
                 f'{data.medblog_helped}', f'{data.how_long_following}', f'{data.top_questions}',
                 f'{data.how_warmed_up}', f'{data.rate_of_employment}',
+                f'{datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")}',
             ]
         )
 

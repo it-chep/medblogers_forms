@@ -361,7 +361,9 @@ class ExpressMedbloger(models.Model, BaseModelForm):
         ("telegram", "Telegram"),
         ("bot", "Рассылка в боте"),
         ("email", "Рассылка на почте"),
-        ("meducation", "Блог Meducation")
+        ("meducation", "Блог Meducation"),
+        ("nastav_readydoc", "Сайт наставничества Владимира Нечепорука"),
+        ("nastav_speecadoc", "Сайт наставничества Екатерины Спицыной")
     )
 
     MEDBLOG_CHOICES = (
