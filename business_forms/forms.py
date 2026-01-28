@@ -102,20 +102,46 @@ class ExpressMedblogerForm(forms.ModelForm):
             "policy_agreement",
         )
         widgets = {
-            'speciality': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
-            'medblog_reason': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
-            'medblog_complexity': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
-            'medblog_helped': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
-            'how_long_following': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
-            'top_questions': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
-            'name': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
-            'age': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
-            'city': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
-            'instagram_username': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
-            'phone': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
+            'speciality': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'medblog_reason': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'medblog_complexity': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'medblog_helped': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'how_long_following': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'top_questions': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'name': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'age': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'city': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'instagram_username': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'phone': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
             'email': forms.EmailInput(attrs={'placeholder': 'Мой ответ'}, ),
-            'tg_channel_url': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
-            'tg_username': forms.TextInput(attrs={'placeholder': 'Мой ответ'}),
+            'tg_channel_url': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'tg_username': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, 'required': True }
+            ),
             'policy_agreement': forms.CheckboxInput(attrs={'style': 'display:none'}),
             'marketing_type': forms.RadioSelect,
             'average_income': forms.RadioSelect,
@@ -134,6 +160,46 @@ class ExpressMedblogerForm(forms.ModelForm):
         })
 
         self.fields['marketing_type'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+
+        self.fields['speciality'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['medblog_reason'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['medblog_complexity'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['medblog_helped'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['how_long_following'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['top_questions'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['name'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['age'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['city'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['instagram_username'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['phone'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['tg_channel_url'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['tg_username'].error_messages.update({
             'required': 'Обязательное поле'
         })
 

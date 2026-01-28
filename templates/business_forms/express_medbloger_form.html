@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block extra_links %}
+    <link rel="stylesheet" href="{% static "css/express_medbloger.css" %}">
 {% endblock %}
 
 {% block content %}
@@ -189,6 +190,11 @@
                                                                 да
                                                             </label>
                                                         </div>
+                                                    </div>
+                                                {% elif 'auto-resize-textarea' in field.field.widget.attrs.class %}
+                                                    <div class="textarea-with-underline">
+                                                        {{ field }}
+                                                        <div class="underline"></div>
                                                     </div>
                                                 {% else %}
                                                     {{ field }}
