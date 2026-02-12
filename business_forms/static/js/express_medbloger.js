@@ -10,7 +10,35 @@ $(document).ready(function () {
         }
         const $fieldWarningContainer = $fieldInputContainer.find('.field_item_warning_container');
         $(this).on('blur', function () {
+            if (!$(this).val() && $(this).prop('required')) {
+                $fieldInputContainer.addClass('invalid');
+                $line.addClass('invalid');
+                $fieldWarningContainer.css('display', 'block');
+            } else {
+                $fieldInputContainer.removeClass('invalid')
+                $line.removeClass('invalid');
+                $fieldWarningContainer.css('display', 'none');
+            }
+        });
 
+        $(this).on('input change', function () {
+            $fieldInputContainer.removeClass('invalid')
+            $line.removeClass('invalid');
+            $fieldWarningContainer.css('display', 'none');
+        });
+    });
+
+    $('.input_container textarea').each(function () {
+        const $fieldInputContainer = $(this).closest('.field_inline_item_container');
+        const $line = $(this).closest('.input_container').find('.line')
+        if ($(this).length) {
+            if ($(this).attr('type') === 'checkbox') {
+                $(this).addClass('checkbox');
+                $line.remove()
+            }
+        }
+        const $fieldWarningContainer = $fieldInputContainer.find('.field_item_warning_container');
+        $(this).on('blur', function () {
             if (!$(this).val() && $(this).prop('required')) {
                 $fieldInputContainer.addClass('invalid');
                 $line.addClass('invalid');
@@ -107,6 +135,27 @@ $(document).ready(function () {
             }
         });
 
+        $('form textarea[required]').each(function () {
+            const $field = $(this);
+            const $fieldInputContainer = $field.closest('.field_inline_item_container');
+            const $line = $field.closest('.input_container').find('.line');
+            const $fieldWarningContainer = $fieldInputContainer.find('.field_item_warning_container');
+            if ($field.attr('id') === 'id_have_bought_products') {
+                return true
+            }
+            // Обычная проверка для других полей
+            if (!$field.val() && $field.prop('required')) {
+                $fieldInputContainer.addClass('invalid');
+                $line.addClass('invalid');
+                $fieldWarningContainer.css('display', 'block');
+                isValid = false;
+            } else {
+                $fieldInputContainer.removeClass('invalid');
+                $line.removeClass('invalid');
+                $fieldWarningContainer.css('display', 'none');
+            }
+        });
+
         if ($("#radio_have_bought_products_no").is(":checked")) {
             formDataObj["have_bought_products"] = "нет";
         } else if ($("#radio_have_bought_products_another").is(":checked")) {
@@ -174,5 +223,49 @@ $(document).ready(function () {
         $('.input_container').removeClass('invalid');
         $('input[name="radio-group"]').prop('checked', false);
         $('#id_have_bought_products').prop('disabled', false);
+    });
+
+    // Находим все textarea внутри .textarea-with-underline
+    const $autoResizeTextareas = $('.auto-resize-textarea');
+
+    // Функция для автоматического изменения высоты
+    function autoResize($element) {
+        // Сбрасываем высоту на auto для правильного расчета
+        $element.css('height', 'auto');
+
+        // Получаем вычисленные стили
+        const computedStyle = window.getComputedStyle($element[0]);
+        const maxHeight = parseInt(computedStyle.maxHeight) || 200;
+
+        // Рассчитываем новую высоту
+        const scrollHeight = $element[0].scrollHeight;
+        const newHeight = Math.min(scrollHeight + 2, maxHeight);
+
+        // Устанавливаем новую высоту
+        $element.css('height', newHeight + 'px');
+
+        // Показываем/скрываем полосу прокрутки при необходимости
+        const showScrollbar = scrollHeight > $element[0].clientHeight;
+        $element.css('overflow-y', showScrollbar ? 'auto' : 'hidden');
+    }
+
+    // Применяем функцию ко всем найденным textarea
+    $autoResizeTextareas.each(function () {
+        const $textarea = $(this);
+
+        // Устанавливаем начальную высоту
+        autoResize($textarea);
+
+        // Добавляем обработчик на ввод текста
+        $textarea.on('input', function () {
+            autoResize($(this));
+        });
+    });
+
+    // Также при изменении размера окна
+    $(window).on('resize', function () {
+        $autoResizeTextareas.each(function () {
+            autoResize($(this));
+        });
     });
 });
