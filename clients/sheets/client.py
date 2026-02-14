@@ -35,7 +35,7 @@ class SpreadsheetClient:
         )
 
     def create_speecadoc_row(self, data: SpeecadocData):
-        sheet = self.client.open_by_key(self.diagnosty_speadsheet_id).worksheet("Настав Кати")
+        sheet = self.client.open_by_key(self.diagnosty_speadsheet_id).worksheet("Настав Катя")
         sheet.append_row(
             [
                 f'{data.name}', f'{data.phone}', f'{data.email}', f'{data.instagram_username}',
