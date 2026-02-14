@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block extra_scripts %}
-    <script src="{% static "js/express_medbloger.js" %}"></script>
+    <script src="{% static "js/speecadoc.js" %}"></script>
 {% endblock %}
 
 {% block title %}
@@ -13,11 +13,11 @@
 {% endblock %}
 
 {% block extra_links %}
-    <link rel="stylesheet" href="{% static "css/express_medbloger.css" %}">
+    <link rel="stylesheet" href="{% static "css/speecadoc.css" %}">
 {% endblock %}
 
 {% block content %}
-    <form action="{% url "express_medbloger" %}" method="post">
+    <form action="{% url "speecadoc" %}" method="post">
         {% csrf_token %}
         <div class="form-container">
             <div class="header_image_container">
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="description_container_header_body" dir="auto">
-                        Йоу ребят, ВСЕМ ПРИДЭП! 🤪
+                        Друзья, всем приветики 💕
                         <br><br>
                         Если вы не знаете, с чего начать вести блог или уже ведёте, но есть ряд сложностей (например, не
                         приходят подписчики, не поступают запросы на консультации), то вы по адресу.
@@ -60,7 +60,7 @@
                             <div class="field_item_container" role="listitem">
                                 <div class="field_inline_item_container">
                                     <p><b>🎁 БОНУС</b></p>
-                                    <span>Оставьте свои контактные данные, если хотите получить <b>лекцию на выбор из любых моих продуктов 🔥</b> (после созвона)</span>
+                                    <span>Оставьте свои контактные данные, если хотите получить <b>лекцию на выбор из любых моих продуктов 🔥</b></span>
                                 </div>
                             </div>
                         </div>

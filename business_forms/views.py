@@ -11,11 +11,11 @@ from django.views.generic import TemplateView
 from django.conf import settings
 
 from business_forms.forms import MedblogersPreEntryForm, NationalBlogersAssociationForm, ExpressMedblogerForm, \
-    NeuroMedblogerForm, SMMForm
+    NeuroMedblogerForm, SMMForm, SpeecadocForm
 from business_forms.models import BusinessForm, MedblogersPreEntry, NationalBlogersAssociation, ExpressMedbloger, \
-    NeuroMedbloger, SMMSpecialists
+    NeuroMedbloger, SMMSpecialists, Speecadoc
 from business_forms.utils import format_phone_number, get_site_url
-from clients.sheets.dto import ExpressMedblogerData, NeuroMedblogerData, SmmSpecialistData
+from clients.sheets.dto import ExpressMedblogerData, NeuroMedblogerData, SmmSpecialistData, SpeecadocData
 
 
 def health_check(request):
@@ -317,6 +317,62 @@ class SpasiboSMMView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         content_type = ContentType.objects.get_for_model(SMMSpecialists)
+        context["business_form_settings"] = BusinessForm.objects.filter(content_type=content_type).first()
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
+
+class SpeecadocView(TemplateView, BaseForm):
+    template_name = 'business_forms/speecadoc_form.html'
+    form_class = SpeecadocForm
+    form_method = "speecadoc_push_notification"
+    admins = [settings.DIAGNOSTY_CHAT_ID]
+    client = settings.SPREADSHEET_CLIENT
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        content_type = ContentType.objects.get_for_model(Speecadoc)
+        context["business_form_settings"] = BusinessForm.objects.filter(content_type=content_type).first()
+        context["medblogers_form"] = self.form_class()
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        result = {"success": False}
+
+        if form.is_valid():
+            instance = form.save()
+            data = {
+                "doctor_instagram_link": instance.instagram_link,
+                "doctor_tg_phone_link": instance.tg_phone_link,
+                "doctor_tg_username_link": instance.tg_username_link,
+                "doctor_tg_username": instance.tg_username,
+                "doctor_name": instance.name,
+                "doctor_phone": format_phone_number(instance.phone),
+                "doctor_wa_link": instance.wa_link
+            }
+            self.call_api_method(data)
+            self.client.create_speecadoc_row(SpeecadocData.from_model(instance))
+            result.update({"success": True, "redirect_url": get_site_url() + reverse("spasibo_speecadoc")})
+        else:
+            result.update({"errors": form.errors})
+
+        return JsonResponse(result)
+
+
+class SpasiboSpeecadocView(TemplateView):
+    template_name = 'business_forms/spasibo_speecadoc_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        content_type = ContentType.objects.get_for_model(Speecadoc)
         context["business_form_settings"] = BusinessForm.objects.filter(content_type=content_type).first()
         return context
 
