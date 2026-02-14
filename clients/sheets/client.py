@@ -4,7 +4,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 from django.conf import settings
 
-from clients.sheets.dto import ExpressMedblogerData, NeuroMedblogerData, SmmSpecialistData
+from clients.sheets.dto import ExpressMedblogerData, NeuroMedblogerData, SmmSpecialistData, SpeecadocData
 
 
 class SpreadsheetClient:
@@ -22,6 +22,20 @@ class SpreadsheetClient:
 
     def create_diagnosty_row(self, data: ExpressMedblogerData):
         sheet = self.client.open_by_key(self.diagnosty_speadsheet_id).worksheet("Предзапись на всё")
+        sheet.append_row(
+            [
+                f'{data.name}', f'{data.phone}', f'{data.email}', f'{data.instagram_username}',
+                f'{data.tg_channel_url}', f'{data.tg_username}', f'{data.marketing_type}',
+                f'{data.have_bought_products}', f'{data.speciality}', f'{data.age}', f'{data.city}',
+                f'{data.average_income}', f'{data.medblog}', f'{data.medblog_reason}', f'{data.medblog_complexity}',
+                f'{data.medblog_helped}', f'{data.how_long_following}', f'{data.top_questions}',
+                f'{data.how_warmed_up}', f'{data.rate_of_employment}',
+                f'{datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")}',
+            ]
+        )
+
+    def create_speecadoc_row(self, data: SpeecadocData):
+        sheet = self.client.open_by_key(self.diagnosty_speadsheet_id).worksheet("Кастдев Кати")
         sheet.append_row(
             [
                 f'{data.name}', f'{data.phone}', f'{data.email}', f'{data.instagram_username}',

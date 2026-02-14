@@ -1,0 +1,96 @@
+/* Контейнер для textarea с подчеркиванием */
+.textarea-with-underline {
+    position: relative;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    margin-left: 10px; /* Если нужно отступ слева */
+}
+
+/* Стили для самого textarea внутри контейнера */
+.textarea-with-underline textarea.auto-resize-textarea {
+    background-color: transparent;
+    border: none;
+    resize: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    z-index: 1;
+    overflow-y: hidden; /* Скрываем вертикальный скролл */
+    overflow-x: hidden;
+    padding: 8px 0 0 0;
+    font-size: 16px;
+    line-height: 1.5;
+    width: 100%;
+    min-height: 40px; /* Минимальная высота */
+    height: auto; /* Автоматическая высота */
+    transition: all 0.3s ease;
+    outline: none;
+    position: relative;
+    font-family: inherit;
+    color: inherit;
+    margin-bottom: 0 !important;
+    display: block; /* Важно: чтобы textarea занимал всю ширину */
+}
+
+/* Плейсхолдер */
+.textarea-with-underline textarea.auto-resize-textarea::placeholder {
+    color: #999;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.textarea-with-underline textarea.auto-resize-textarea:focus::placeholder {
+    opacity: 0.5;
+}
+
+/* Подчеркивание */
+.textarea-with-underline .underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #ddd;
+    z-index: 0;
+    transition: background-color 0.3s ease;
+}
+
+/* Подчеркивание при фокусе */
+.textarea-with-underline textarea.auto-resize-textarea:focus ~ .underline {
+    background-color: #007bff; /* Синий цвет при фокусе */
+    height: 2px;
+}
+
+/* Подчеркивание при ховере */
+.textarea-with-underline:hover .underline {
+    background-color: #aaa;
+}
+
+/* Для радио-кнопок "Другое:" */
+.radio-button-container .textarea-with-underline {
+    margin-left: 0; /* Убираем отступ если внутри радио-контейнера */
+}
+
+.radio-button-container .textarea-with-underline textarea {
+    margin-left: 0;
+}
+
+body {
+    font-family: 'Montserrat', Roboto, RobotoDraft, Helvetica, Arial, sans-serif !important;
+    margin: 0;
+    padding: 0;
+    background-color: #d25a973b !important;
+    word-break: break-word;
+}
+
+
+.description_container_header_cap {
+    background-color: #D25A97;
+}
+
+.submit_button {
+    background-color: #D25A97;
+}
+
+.clear_inline_container {
+    color: #D25A97;
+}

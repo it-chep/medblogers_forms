@@ -362,8 +362,6 @@ class ExpressMedbloger(models.Model, BaseModelForm):
         ("bot", "Рассылка в боте"),
         ("email", "Рассылка на почте"),
         ("meducation", "Блог Meducation"),
-        ("nastav_readydoc", "Сайт наставничества Владимира Нечепорука"),
-        ("nastav_speecadoc", "Сайт наставничества Екатерины Спицыной")
     )
 
     MEDBLOG_CHOICES = (
@@ -636,3 +634,128 @@ class SMMSpecialists(models.Model):
 
     def formatted_user_contact(self):
         return format_html("<a href=\"{}\" target=\"_blank\">{}</a>", self.tg_username_link, 'Написать человеку')
+
+
+class Speecadoc(models.Model, BaseModelForm):
+    AVERAGE_INCOME_CHOICES = (
+        ("0-50", "до 50тыс"),
+        ("50-100", "50 - 100тыс"),
+        ("100-150", "100 - 150тыс"),
+        ("150-200", "150 - 200тыс"),
+        ("200-300", "200 - 300тыс"),
+        ("300-500", "300 - 500тыс"),
+        ("500-1кк", "500тыс - 1млн"),
+        ("1кк+", "1млн+"),
+    )
+
+    MARKETING_TYPE_CHOICES = (
+        ("instagram", "Instagram"),
+        ("telegram", "Telegram"),
+        ("bot", "Рассылка в боте"),
+        ("email", "Рассылка на почте"),
+        ("meducation", "Блог Meducation"),
+    )
+
+    MEDBLOG_CHOICES = (
+        ("yes_money", "Веду, получаю с него стабильный доход"),
+        ("yes_no_money", "Веду, но не очень результативно / не зарабатываю с него"),
+        ("no", "Не веду, только планирую завести"),
+    )
+
+    marketing_type = models.CharField(
+        max_length=255, choices=MARKETING_TYPE_CHOICES,
+        verbose_name="Я увидел(а) эту анкету в:",
+        null=True, blank=True
+    )
+    have_bought_products = models.CharField(
+        max_length=255,
+        verbose_name="Вы покупали какие-то мои продукты?",
+        null=True, blank=True
+    )
+    speciality = models.CharField(
+        max_length=255, verbose_name="Специализация (гинеколог, невролог и т.д.)",
+        blank=True, null=True
+    )
+    average_income = models.CharField(
+        max_length=255, choices=AVERAGE_INCOME_CHOICES,
+        verbose_name="Ваш средний доход в месяц, в рублях, суммарный со всех источников",
+        null=True, blank=True
+    )
+    medblog = models.CharField(
+        max_length=255, choices=MEDBLOG_CHOICES,
+        verbose_name="Медблог:",
+        null=True, blank=True
+    )
+    medblog_reason = models.TextField(
+        verbose_name="Зачем вы ведёте / хотите вести медблог?",
+        null=True, blank=True,
+    )
+    medblog_complexity = models.TextField(
+        verbose_name="Какие сложности есть сейчас с блогом? Что останавливает от того, чтобы достичь целей выше?",
+        null=True, blank=True,
+    )
+    medblog_helped = models.TextField(
+        verbose_name="Что уже пробовали делать, чтобы решить проблему? Что помогло, а что - не очень?",
+        null=True, blank=True,
+    )
+    how_long_following = models.TextField(
+        verbose_name="Как давно вы на меня подписаны и откуда узнали?",
+        null=True, blank=True,
+    )
+    top_questions = models.TextField(
+        verbose_name="ТОП-1 или ТОП-3 вопроса по блогингу, которые вы хотите решить прямо сейчас:",
+        null=True, blank=True,
+    )
+    how_warmed_up = models.CharField(
+        max_length=255, choices=ZERO_TO_TEN_CHOICES,
+        verbose_name="На сколько от 0 до 10 вы прогреты, чтобы начать у меня обучение любого формата?",
+        null=True, blank=True,
+    )
+    rate_of_employment = models.CharField(
+        max_length=255, choices=ZERO_TO_TEN_CHOICES,
+        verbose_name="Оцените уровень вашей занятости от 0 до 10",
+        null=True, blank=True,
+    )
+    name = models.CharField(
+        max_length=255, verbose_name="Ваше ФИО",
+        null=True, blank=True
+    )
+    age = models.CharField(
+        max_length=255, verbose_name="Возраст",
+        blank=True, null=True
+    )
+    city = models.CharField(
+        max_length=255, verbose_name="Город проживания в настоящий момент",
+        blank=True, null=True
+    )
+    instagram_username = models.CharField(
+        max_length=255, verbose_name="Ссылка на ваш инстаграм",
+        null=True, blank=True
+    )
+    tg_channel_url = models.CharField(
+        max_length=255, verbose_name="Ссылка на ваш телеграм-канал",
+        null=True, blank=True
+    )
+    tg_username = models.CharField(
+        max_length=255,
+        verbose_name="Ссылка на ваш личный телеграм (не канал) в формате https://t.me/readydoc или через @",
+        null=True, blank=True
+    )
+    phone = models.CharField(
+        max_length=255, verbose_name="Контактный телефон", null=True, blank=True
+    )
+    email = models.EmailField(
+        verbose_name="Адрес электронной почты", null=True, blank=True
+    )
+
+    policy_agreement = models.BooleanField(
+        verbose_name="Согласен с политикой обработки персональных данных",
+        default=False
+    )
+
+    def __str__(self):
+        return f"Анкета 'Настав кати': {self.name}"
+
+    class Meta:
+        verbose_name = "запись в анкете 'Настав кати'"
+        verbose_name_plural = "Анкета 'Настав кати'"

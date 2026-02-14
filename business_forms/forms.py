@@ -1,6 +1,6 @@
 from django import forms
 from business_forms.models import MedblogersPreEntry, NationalBlogersAssociation, ExpressMedbloger, ZERO_TO_TEN_CHOICES, \
-    NeuroMedbloger, SMMSpecialists
+    NeuroMedbloger, SMMSpecialists, Speecadoc
 
 
 class MedblogersPreEntryForm(forms.ModelForm):
@@ -140,7 +140,7 @@ class ExpressMedblogerForm(forms.ModelForm):
                 attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
             ),
             'tg_username': forms.Textarea(
-                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, 'required': True }
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, 'required': True}
             ),
             'policy_agreement': forms.CheckboxInput(attrs={'style': 'display:none'}),
             'marketing_type': forms.RadioSelect,
@@ -316,3 +316,161 @@ class SMMForm(forms.ModelForm):
         self.fields['social_networks'].required = False
         self.fields['your_experience'].choices = list(SMMSpecialists.YOUR_EXPERIENCE_CHOICES)
         self.fields['your_experience'].required = False
+
+
+class SpeecadocForm(forms.ModelForm):
+    """Настав кати"""
+
+    class Meta:
+        model = Speecadoc
+        fields = (
+            "marketing_type",
+            "have_bought_products",
+            "speciality",
+            "average_income",
+            "medblog",
+            "medblog_reason",
+            "medblog_complexity",
+            "medblog_helped",
+            "how_long_following",
+            "top_questions",
+            "how_warmed_up",
+            "rate_of_employment",
+            "name",
+            "age",
+            "city",
+            "instagram_username",
+            "tg_channel_url",
+            "tg_username",
+            "phone",
+            "email",
+            "policy_agreement",
+        )
+        widgets = {
+            'speciality': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'medblog_reason': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'medblog_complexity': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'medblog_helped': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'how_long_following': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'top_questions': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'name': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'age': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'city': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'instagram_username': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'phone': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'email': forms.EmailInput(attrs={'placeholder': 'Мой ответ'}, ),
+            'tg_channel_url': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'tg_username': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, 'required': True}
+            ),
+            'policy_agreement': forms.CheckboxInput(attrs={'style': 'display:none'}),
+            'marketing_type': forms.RadioSelect,
+            'average_income': forms.RadioSelect,
+            'medblog': forms.RadioSelect,
+            'how_warmed_up': forms.RadioSelect,
+            'rate_of_employment': forms.RadioSelect,
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.required = True
+
+        self.fields['email'].error_messages.update({
+            'invalid': 'Введите правильный адрес электронной почты.'
+        })
+
+        self.fields['marketing_type'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+
+        self.fields['speciality'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['medblog_reason'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['medblog_complexity'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['medblog_helped'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['how_long_following'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['top_questions'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['name'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['age'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['city'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['instagram_username'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['phone'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['tg_channel_url'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+        self.fields['tg_username'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+
+        self.fields['average_income'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+
+        self.fields['medblog'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+
+        self.fields['how_warmed_up'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+
+        self.fields['rate_of_employment'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+
+        self.fields['have_bought_products'].error_messages.update({
+            'required': 'Обязательное поле'
+        })
+
+        self.fields['marketing_type'].choices = list(ExpressMedbloger.MARKETING_TYPE_CHOICES)
+        self.fields['average_income'].choices = list(ExpressMedbloger.AVERAGE_INCOME_CHOICES)
+        self.fields['medblog'].choices = list(ExpressMedbloger.MEDBLOG_CHOICES)
+
+        self.fields['how_warmed_up'].choices = list(ZERO_TO_TEN_CHOICES)
+        self.fields['rate_of_employment'].choices = list(ZERO_TO_TEN_CHOICES)

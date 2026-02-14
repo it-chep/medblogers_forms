@@ -5,7 +5,7 @@ from business_forms.views import (
     MedblogersPreEntryView, SpasiboMedblogersPreEntryView,
     NationalBlogersAssociationView, SpasiboNationalBlogersAssociationView,
     ExpressMedblogerView, SpasiboExpressMedblogerView, NeuroMedblogerView, SpasiboNeuroMedblogerView,
-    SpasiboSMMView, SMMView
+    SpasiboSMMView, SMMView, SpeecadocView, SpasiboSpeecadocView
 )
 
 urlpatterns = [
@@ -19,6 +19,9 @@ urlpatterns = [
 
     path("spasibo_express_medbloger/", SpasiboExpressMedblogerView.as_view(), name="spasibo_express_medbloger"),
     path("express_medbloger/", ExpressMedblogerView.as_view(), name="express_medbloger"),
+
+    path("spasibo_speecadoc/", SpasiboSpeecadocView.as_view(), name="spasibo_speecadoc"),
+    path("speecadoc/", SpeecadocView.as_view(), name="speecadoc"),
 
     path('spasibo_national_medbloger/', SpasiboNationalBlogersAssociationView.as_view(),
          name='spasibo_national_medbloger'),
