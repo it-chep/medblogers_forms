@@ -76,7 +76,7 @@ class BusinessFormAdmin(admin.ModelAdmin):
         form = super().get_form(request, obj, **kwargs)
         form.base_fields['content_type'].queryset = ContentType.objects.filter(
             model__in=['medblogerspreentry', 'nastavnichestvopreentry', 'nationalblogersassociation',
-                       'expressmedbloger', 'neuromedbloger', 'MedSMM']
+                       'expressmedbloger', 'neuromedbloger', 'medsmm', 'speecadoc']
         )
         return form
 
