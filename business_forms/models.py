@@ -956,8 +956,8 @@ class MedSMM(models.Model, BaseModelForm):
     )
 
     def __str__(self):
-        return f"Анкета 'Опрос для будущих мед. SMM-специалистов': {self.name}"
+        return f"Анкета 'МЕД SMM-специалистов': {self.name}"
 
     class Meta:
-        verbose_name = "запись в анкете 'Опрос для будущих мед. SMM-специалистов'"
-        verbose_name_plural = "Анкета 'Опрос для будущих мед. SMM-специалистов'"
+        verbose_name = "запись в анкете 'МЕД SMM-специалистов'"
+        verbose_name_plural = "Анкета 'МЕД SMM-специалистов'"

@@ -70,7 +70,7 @@ class SpreadsheetClient:
         )
 
     def create_med_smm_row(self, data: MedSMMData):
-        sheet = self.client.open_by_key(self.med_smm_spreadsheet_id).worksheet("Предзапись")
+        sheet = self.client.open_by_key(self.med_smm_spreadsheet_id).worksheet("Ответы на форму")
         sheet.append_row(
             [
                 f'{datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")}',
