@@ -27,3 +27,11 @@
         margin-bottom: 12px;
     }
 }
+
+body {
+    font-family: 'Montserrat', Roboto, RobotoDraft, Helvetica, Arial, sans-serif !important;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(231, 246, 252) !important;
+    word-break: break-word;
+}

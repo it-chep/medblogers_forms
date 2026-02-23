@@ -21,6 +21,19 @@ ZERO_TO_TEN_CHOICES = (
     ("10", "10"),
 )
 
+ONE_TO_TEN_CHOICES = (
+    ("1", "1"),
+    ("2", "2"),
+    ("3", "3"),
+    ("4", "4"),
+    ("5", "5"),
+    ("6", "6"),
+    ("7", "7"),
+    ("8", "8"),
+    ("9", "9"),
+    ("10", "10"),
+)
+
 
 def safe_filename(filename):
     filename = re.sub(r'[^\w\s.-]', '', filename).strip()
@@ -759,3 +772,192 @@ class Speecadoc(models.Model, BaseModelForm):
     class Meta:
         verbose_name = "запись в анкете 'Настав кати'"
         verbose_name_plural = "Анкета 'Настав кати'"
+
+
+class MedSMM(models.Model, BaseModelForm):
+    MARKETING_TYPE_CHOICES = (
+        ("instagram", "Instagram"),
+        ("telegram", "Telegram"),
+        ("bot", "Рассылка в боте"),
+        ("email", "Рассылка на почте"),
+    )
+
+    AGE_RANGE_CHOICES = (
+        ("18-", "до 18"),
+        ("18-24", "18-24"),
+        ("25-30", "25-30"),
+        ("31-35", "31-35"),
+        ("36-40", "36-40"),
+        ("41-45", "41-45"),
+        ("46-51", "46-51"),
+        ("52+", "52+"),
+    )
+
+    AVERAGE_INCOME_CHOICES = (
+        ("0-50", "до 50 тыс"),
+        ("50-100", "50 - 100 тыс"),
+        ("100-150", "100 - 150 тыс"),
+        ("150-200", "150 - 200 тыс"),
+        ("200-300", "200 - 300 тыс"),
+        ("300-500", "300 - 500 тыс"),
+        ("500+", "свыше 500 тыс"),
+    )
+
+    TRIED_BLOGGING_CHOICES = (
+        ("personal", "Да, но только личный"),
+        ("expert", "Да, пробовал вести / веду свой экспертный"),
+        ("other_person", "Да, но не себе, а кому-то другому"),
+        ("never", "Ни разу не вёл"),
+    )
+
+    SMM_EDUCATION_CHOICES = (
+        ("paid", "Да, проходил платные курсы"),
+        ("free", "Да, но смотрел только бесплатные материалы (инста, ютуб и тд)"),
+        ("none", "Не обучался"),
+    )
+
+    SKILLS_CHOICES = (
+        ("blog_packaging", "Упаковывать блог (шапка, хайлайтс и тд)"),
+        ("content_ideas", "Придумывать идеи для контента"),
+        ("copywriting", "Писать тексты постов"),
+        ("video", "Снимать / монтировать видео"),
+        ("design", "Дизайнить (Canva, Photoshop и тд)"),
+        ("web_development", "Верстать сайты / таплинк"),
+        ("neural_networks", "Работать с нейросетями"),
+        ("client_search", "Находить клиентов"),
+        ("sales", "Продавать"),
+        ("spreadsheets", "Вести таблицы / планнеры / составлять презентации"),
+        ("documents", "Составлять юридические документы (договор, акт и тд)"),
+    )
+
+    SKILLS_MAPPING = {
+        "blog_packaging": "Упаковывать блог (шапка, хайлайтс и тд)",
+        "content_ideas": "Придумывать идеи для контента",
+        "copywriting": "Писать тексты постов",
+        "video": "Снимать / монтировать видео",
+        "design": "Дизайнить (Canva, Photoshop и тд)",
+        "web_development": "Верстать сайты / таплинк",
+        "neural_networks": "Работать с нейросетями",
+        "client_search": "Находить клиентов",
+        "sales": "Продавать",
+        "spreadsheets": "Вести таблицы / планнеры / составлять презентации",
+        "documents": "Составлять юридические документы (договор, акт и тд)",
+    }
+
+    DESIRED_INCOME_CHOICES = (
+        ("20-30", "20 - 30 тыс"),
+        ("30-60", "30 - 60 тыс"),
+        ("60-100", "60 - 100 тыс"),
+        ("100+", "100 тыс+"),
+    )
+
+    INVESTMENT_READINESS_CHOICES = (
+        ("20-30", "20 - 30 тыс"),
+        ("30-50", "30 - 50 тыс"),
+        ("50-100", "50 - 100 тыс"),
+        ("100+", "100+ тыс"),
+    )
+
+    timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Отметка времени", null=True, blank=True)
+
+    marketing_type = models.CharField(
+        max_length=255, choices=MARKETING_TYPE_CHOICES,
+        verbose_name="Вы увидели эту анкету у меня в:",
+        null=True, blank=True
+    )
+    age_range = models.CharField(
+        max_length=255, choices=AGE_RANGE_CHOICES,
+        verbose_name="Ваш возраст",
+        null=True, blank=True
+    )
+    occupation = models.CharField(
+        max_length=255,
+        verbose_name="Чем вы сейчас занимаетесь? (род деятельности)",
+        null=True, blank=True
+    )
+    average_income = models.CharField(
+        max_length=255, choices=AVERAGE_INCOME_CHOICES,
+        verbose_name="Ваш средний доход в месяц, в рублях (суммарный со всех источников)",
+        null=True, blank=True
+    )
+    reason_for_career_change = models.TextField(
+        verbose_name="Почему задумываетесь о смене профессии?",
+        null=True, blank=True,
+    )
+    disappointment_level = models.CharField(
+        max_length=255, choices=ONE_TO_TEN_CHOICES,
+        verbose_name="Оцените уровень разочарования в профессии врача от 0 до 10",
+        null=True, blank=True,
+    )
+    tried_blogging = models.CharField(
+        max_length=255, choices=TRIED_BLOGGING_CHOICES,
+        verbose_name="Вы пробовали вести блог? (в любой соцсети)",
+        null=True, blank=True
+    )
+    smm_education = models.CharField(
+        max_length=255, choices=SMM_EDUCATION_CHOICES,
+        verbose_name="Вы уже обучались где-то SMM / маркетингу / блогингу?",
+        null=True, blank=True
+    )
+    skills = models.CharField(
+        verbose_name="Что умеете делать?",
+        max_length=500,
+        null=True, blank=True,
+    )
+    smm_work_vision = models.TextField(
+        verbose_name="Как вы представляете работу SMM-специалиста?",
+        null=True, blank=True,
+    )
+    desired_income = models.CharField(
+        max_length=255, choices=DESIRED_INCOME_CHOICES,
+        verbose_name="Какой доход в SMM через 6 месяцев был бы для вас успехом (в месяц в рублях)",
+        null=True, blank=True
+    )
+    top_fears = models.TextField(
+        verbose_name="Что для вас самое страшное в работе SMM на текущий момент? ТОП-3 страха",
+        null=True, blank=True,
+    )
+    investment_readiness = models.CharField(
+        max_length=255, choices=INVESTMENT_READINESS_CHOICES,
+        verbose_name="Сколько готовы вложить в освоение новой профессии SMM?",
+        null=True, blank=True
+    )
+    five_year_plan = models.TextField(
+        verbose_name="Кем и где вы хотите работать через 5 лет и сколько зарабатывать?",
+        null=True, blank=True,
+    )
+    name = models.CharField(
+        max_length=255, verbose_name="Ваши Имя и Фамилия",
+        null=True, blank=True
+    )
+    city = models.CharField(
+        max_length=255, verbose_name="Город проживания в настоящий момент",
+        null=True, blank=True
+    )
+    instagram_username = models.CharField(
+        max_length=255, verbose_name="Ссылка на ваш инстаграм",
+        null=True, blank=True
+    )
+    tg_username = models.CharField(
+        max_length=255,
+        verbose_name="Ссылка на ваш личный телеграм (не канал) в формате https://t.me/readydoc или через @",
+        null=True, blank=True
+    )
+    email = models.EmailField(
+        verbose_name="Email", null=True, blank=True
+    )
+    phone = models.CharField(
+        max_length=255, verbose_name="Номер телефона через +7", null=True, blank=True
+    )
+
+    policy_agreement = models.BooleanField(
+        verbose_name="Даю согласие на обработку персональных данных",
+        default=False
+    )
+
+    def __str__(self):
+        return f"Анкета 'Опрос для будущих мед. SMM-специалистов': {self.name}"
+
+    class Meta:
+        verbose_name = "запись в анкете 'Опрос для будущих мед. SMM-специалистов'"
+        verbose_name_plural = "Анкета 'Опрос для будущих мед. SMM-специалистов'"

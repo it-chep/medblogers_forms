@@ -1,6 +1,6 @@
 from django import forms
 from business_forms.models import MedblogersPreEntry, NationalBlogersAssociation, ExpressMedbloger, ZERO_TO_TEN_CHOICES, \
-    NeuroMedbloger, SMMSpecialists, Speecadoc
+    NeuroMedbloger, SMMSpecialists, Speecadoc, MedSMM, ONE_TO_TEN_CHOICES
 
 
 class MedblogersPreEntryForm(forms.ModelForm):
@@ -228,7 +228,7 @@ class ExpressMedblogerForm(forms.ModelForm):
         self.fields['medblog'].choices = list(ExpressMedbloger.MEDBLOG_CHOICES)
 
         self.fields['how_warmed_up'].choices = list(ZERO_TO_TEN_CHOICES)
-        self.fields['rate_of_employment'].choices = list(ZERO_TO_TEN_CHOICES)
+        self.fields['rate_of_employment'].choices = list(ZERO_TO_TEN_CHOICES)  # ExpressMedblogerForm
 
 
 class NeuroMedblogerForm(forms.ModelForm):
@@ -468,9 +468,103 @@ class SpeecadocForm(forms.ModelForm):
             'required': 'Обязательное поле'
         })
 
-        self.fields['marketing_type'].choices = list(ExpressMedbloger.MARKETING_TYPE_CHOICES)
-        self.fields['average_income'].choices = list(ExpressMedbloger.AVERAGE_INCOME_CHOICES)
-        self.fields['medblog'].choices = list(ExpressMedbloger.MEDBLOG_CHOICES)
+        self.fields['marketing_type'].choices = list(Speecadoc.MARKETING_TYPE_CHOICES)
+        self.fields['average_income'].choices = list(Speecadoc.AVERAGE_INCOME_CHOICES)
+        self.fields['medblog'].choices = list(Speecadoc.MEDBLOG_CHOICES)
 
         self.fields['how_warmed_up'].choices = list(ZERO_TO_TEN_CHOICES)
         self.fields['rate_of_employment'].choices = list(ZERO_TO_TEN_CHOICES)
+
+
+class MedSMMForm(forms.ModelForm):
+    """Опрос для будущих медицинских SMM-специалистов"""
+
+    class Meta:
+        model = MedSMM
+        fields = (
+            "marketing_type",
+            "age_range",
+            "occupation",
+            "average_income",
+            "reason_for_career_change",
+            "disappointment_level",
+            "tried_blogging",
+            "smm_education",
+            "skills",
+            "smm_work_vision",
+            "desired_income",
+            "top_fears",
+            "investment_readiness",
+            "five_year_plan",
+            "name",
+            "city",
+            "instagram_username",
+            "tg_username",
+            "email",
+            "phone",
+            "policy_agreement",
+        )
+        widgets = {
+            'reason_for_career_change': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'smm_work_vision': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'top_fears': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'five_year_plan': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'name': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'city': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'instagram_username': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'tg_username': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'phone': forms.Textarea(
+                attrs={'placeholder': 'Мой ответ', 'class': 'auto-resize-textarea', 'rows': 1, }
+            ),
+            'email': forms.EmailInput(attrs={'placeholder': 'Мой ответ'}),
+            'policy_agreement': forms.CheckboxInput(attrs={'style': 'display:none'}),
+            'marketing_type': forms.RadioSelect,
+            'age_range': forms.RadioSelect,
+            'average_income': forms.RadioSelect,
+            'tried_blogging': forms.RadioSelect,
+            'smm_education': forms.RadioSelect,
+            'desired_income': forms.RadioSelect,
+            'investment_readiness': forms.RadioSelect,
+            'disappointment_level': forms.RadioSelect,
+            'skills': forms.CheckboxSelectMultiple,
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.error_messages.update({
+                'required': 'Обязательное поле'
+            })
+            field.required = True
+
+        self.fields['email'].error_messages.update({
+            'invalid': 'Введите правильный адрес электронной почты.'
+        })
+
+        self.fields['skills'].required = False
+
+        self.fields['marketing_type'].choices = list(MedSMM.MARKETING_TYPE_CHOICES)
+        self.fields['age_range'].choices = list(MedSMM.AGE_RANGE_CHOICES)
+        self.fields['average_income'].choices = list(MedSMM.AVERAGE_INCOME_CHOICES)
+        self.fields['tried_blogging'].choices = list(MedSMM.TRIED_BLOGGING_CHOICES)
+        self.fields['smm_education'].choices = list(MedSMM.SMM_EDUCATION_CHOICES)
+        self.fields['desired_income'].choices = list(MedSMM.DESIRED_INCOME_CHOICES)
+        self.fields['investment_readiness'].choices = list(MedSMM.INVESTMENT_READINESS_CHOICES)
+        self.fields['disappointment_level'].choices = list(ONE_TO_TEN_CHOICES)
+        self.fields['skills'].choices = list(MedSMM.SKILLS_CHOICES)

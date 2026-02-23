@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_styles %}
+{% endblock %}
+
+{% block extra_scripts %}
+    <script src="{% static "js/med_smm.js" %}"></script>
+{% endblock %}
+
+{% block title %}
+    Опрос для будущих медицинских SMM-специалистов
+{% endblock %}
+
+{% block extra_links %}
+    <link rel="stylesheet" href="{% static "css/med_smm.css" %}">
+{% endblock %}
+
+{% block content %}
+    <form action="{% url "med_smm" %}" method="post">
+        {% csrf_token %}
+        <div class="form-container">
+            <div class="header_image_container">
+                <img src="{{ business_form_settings.photo.url }}">
+            </div>
+            <div class="description_container">
+                <div class="description_container_header_cap"></div>
+                <div class="description_container_header_container">
+                    <div class="description_container_header">
+                        <div class="description_container_header_text" dir="auto" role="heading" aria-level="1">
+                            Опрос для будущих медицинских SMM-специалистов
+                        </div>
+                    </div>
+                    <div class="description_container_header_body" dir="auto">
+                        Всем ПРИДЭП!
+                        <br><br>
+                        Мы 6 лет работаем с блогами врачей и у них всех одна боль: НЕ ХВАТАЕТ ТОЛКОВЫХ СММЩИКОВ!
+                        Рынок сильно перекошен в сторону спроса, а не предложения.
+                        <br><br>
+                        С другой стороны, многие студенты, ординаторы, молодые врачи или даже жёны в декрете боятся
+                        вести свои блоги, но готовы помогать своим опытным коллегам/партнёрам. Также всё больше людей
+                        хотят уйти из медицины, но не до конца, оставаясь рядом 😉
+                        <br><br>
+                        Поэтому нам очень важны ваши мысли и ответы, чтобы собрать удобное для всех сторон обучение
+                        <b>профессии медицинский SMM.</b>
+                        <br><br>
+                        Время заполнения - 3 минуты
+                        <br><br>
+                        <i>Красавчиков и красоток, кто ответит на все вопросы, будет ждать жирный <b>приятный бонус</b>
+                            от меня в конце 😋🎁</i>
+                    </div>
+                </div>
+            </div>
+            <div class="field_list" role="list">
+                {% for field in medblogers_form %}
+                    {% if field.name == "name" %}
+                        <div class="bonus_block">
+                            <div class="field_item_container" role="listitem">
+                                <div class="field_inline_item_container">
+                                    <p><b>🎁 МОЩНЫЙ БОНУС ДЛЯ ТЕХ, КТО ДОШЁЛ ДО ЭТОГО ВОПРОСА!</b></p>
+                                    <span>Оставьте свои контактные данные, если хотите <b>созвониться на 30-40 минут</b> с моей командой. Мы проведём кастдев (мини-интервью) - поспрашиваем вас о продукте поглубже, взамен подарим <b>лекцию на выбор из любых моих продуктов</b> 🔥</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="field_item_container" role="listitem">
+                        <div class="field_inline_item_container" id="field_inline_item_container_{{ field.name }}">
+                            <div class="field_item_label_container">
+                                <div class="field_item_label">
+                                    <div class="field_item_label_text">
+                                        {% if field.name != "policy_agreement" %}
+                                            {{ field.label }}
+                                        {% else %}
+                                            Согласен с
+                                            <a href="https://readyschool.ru/politicapers"
+                                               target="_blank">политикой обработки персональных данных</a>
+                                        {% endif %}
+                                        <span class="required_star">*</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field_item_input_container">
+                                <div class="field_item_input">
+                                    <div class="field_item_input_inline">
+                                        <div class="input_container {% if field.name == "disappointment_level" %}full_width{% endif %}">
+                                            <div class="radio-button-container">
+                                                {% if field.name == "marketing_type" or field.name == "age_range" or field.name == "average_income" or field.name == "tried_blogging" or field.name == "smm_education" or field.name == "desired_income" or field.name == "investment_readiness" %}
+                                                    {% for value, label in field.field.choices %}
+                                                        <div class="radio-button">
+                                                            <input type="radio" class="radio-button__input"
+                                                                   id="{{ field.name }}_{{ value }}"
+                                                                   name="{{ field.name }}" value="{{ value }}"
+                                                                   {% if field.value == value %}checked{% endif %}>
+
+                                                            <label class="radio-button__label"
+                                                                   for="{{ field.name }}_{{ value }}">
+                                                                <span class="radio-button__custom"></span>
+                                                                {{ label }}
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% elif field.name == "occupation" %}
+                                                    <div class="radio-button">
+                                                        <input type="radio" class="radio-button__input"
+                                                               id="radio_occupation_student"
+                                                               name="radio-occupation" value="student">
+                                                        <label class="radio-button__label"
+                                                               for="radio_occupation_student">
+                                                            <span class="radio-button__custom"></span>
+                                                            Студент меда
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-button">
+                                                        <input type="radio" class="radio-button__input"
+                                                               id="radio_occupation_ordinatur"
+                                                               name="radio-occupation" value="ordinatur">
+                                                        <label class="radio-button__label"
+                                                               for="radio_occupation_ordinatur">
+                                                            <span class="radio-button__custom"></span>
+                                                            Ординатор
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-button">
+                                                        <input type="radio" class="radio-button__input"
+                                                               id="radio_occupation_doctor"
+                                                               name="radio-occupation" value="doctor">
+                                                        <label class="radio-button__label"
+                                                               for="radio_occupation_doctor">
+                                                            <span class="radio-button__custom"></span>
+                                                            Работаю врачом
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-button">
+                                                        <input type="radio" class="radio-button__input"
+                                                               id="radio_occupation_smm_worker"
+                                                               name="radio-occupation" value="smm_worker">
+                                                        <label class="radio-button__label"
+                                                               for="radio_occupation_smm_worker">
+                                                            <span class="radio-button__custom"></span>
+                                                            Работаю в SMM
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-button">
+                                                        <input type="radio" class="radio-button__input"
+                                                               id="radio_occupation_maternity"
+                                                               name="radio-occupation" value="maternity">
+                                                        <label class="radio-button__label"
+                                                               for="radio_occupation_maternity">
+                                                            <span class="radio-button__custom"></span>
+                                                            Декрет
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-button">
+                                                        <input type="radio" class="radio-button__input"
+                                                               id="radio_occupation_another"
+                                                               name="radio-occupation" value="another">
+                                                        <label class="radio-button__label"
+                                                               for="radio_occupation_another">
+                                                            <span class="container_nowrap"><span
+                                                                    class="radio-button__custom"></span>
+                                                            Другое:</span> {{ field }}
+                                                        </label>
+                                                    </div>
+                                                {% elif field.name == "disappointment_level" %}
+                                                    <div class="zero_to_ten_choices_container">
+                                                        <div class="left_text">
+                                                            <span>ухожу из медицины завтра</span>
+                                                        </div>
+                                                        <div class="wrapper_radio-button">
+                                                            {% for value, label in field.field.choices %}
+                                                                <div class="radio-button">
+                                                                    <input type="radio" class="radio-button__input"
+                                                                           id="{{ field.name }}_{{ value }}"
+                                                                           name="{{ field.name }}" value="{{ value }}"
+                                                                           {% if field.value == value %}checked{% endif %}>
+
+                                                                    <label class="radio-button__label radio-button__label_0_10"
+                                                                           for="{{ field.name }}_{{ value }}">
+                                                                        <span class="count">{{ label }}</span>
+                                                                        <span class="radio-button__custom"></span>
+                                                                    </label>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                        <div class="right_text">
+                                                            <span>никогда не уйду</span>
+                                                        </div>
+                                                    </div>
+                                                {% elif field.name == "skills" %}
+                                                    {% for value, label in field.field.choices %}
+                                                        <div class="many-checkbox-button">
+                                                            <input type="checkbox" class="many-checkbox-button__input"
+                                                                   id="{{ field.name }}_{{ value }}"
+                                                                   name="{{ field.name }}" value="{{ value }}"
+                                                                   {% if field.value == value %}checked{% endif %}>
+
+                                                            <label class="many-checkbox-button__label"
+                                                                   for="{{ field.name }}_{{ value }}">
+                                                                <span class="many-checkbox-button__custom"></span>
+                                                                {{ label }}
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                    <div class="many-and-another-container">
+                                                        <div class="many-checkbox-button">
+                                                            <input type="checkbox" class="many-checkbox-button__input"
+                                                                   id="{{ field.name }}_another"
+                                                                   name="many-checkbox-group-1">
+                                                            <label class="many-checkbox-button__label"
+                                                                   for="{{ field.name }}_another">
+                                                                <span class="container_nowrap"><span
+                                                                        class="many-checkbox-button__custom"></span>
+                                                                Другое:</span> <input type="text"
+                                                                                      class="another-input"
+                                                                                      name="{{ field.name }}_another"
+                                                                                      placeholder="">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                {% elif field.name == "policy_agreement" %}
+                                                    {{ field }}
+                                                    <div class="radio-button-container">
+                                                        <div class="radio-button">
+                                                            <input type="radio" class="radio-button__input" id="radio"
+                                                                   name="radio-group">
+                                                            <label class="radio-button__label" for="radio">
+                                                                <span class="radio-button__custom"></span>
+                                                                да
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                {% elif 'auto-resize-textarea' in field.field.widget.attrs.class %}
+                                                    <div class="textarea-with-underline">
+                                                        {{ field }}
+                                                        <div class="underline"></div>
+                                                    </div>
+                                                {% else %}
+                                                    {{ field }}
+                                                {% endif %}
+                                                <div class="line"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field_item_warning_container">
+                                <div class="field_item_warning">
+                                    <img src="{% static "img/warning.svg" %}">
+                                    <span class="warning_text">Это обязательный вопрос.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+            <div class="buttons_container">
+                <div class="buttons_inline_container">
+                    <div class="submit_container">
+                        <div class="submit_button" role="button">
+                        <span class="submit_text_container">
+                            <span class="submit_text">
+                                Отправить
+                            </span>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="clear_container">
+                        <div class="clear_inline_container" role="button">
+                            <span class="clear_button">
+                                <span class="clear_button_text">Очистить форму</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
