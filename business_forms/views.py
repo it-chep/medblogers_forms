@@ -386,6 +386,7 @@ class MedSMMView(TemplateView, BaseForm):
     form_class = MedSMMForm
     form_method = "med_smm_push_notification"
     admins = [settings.ADMINS_CHAT_ID]
+    client = settings.SPREADSHEET_CLIENT
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
