@@ -5,11 +5,15 @@ from business_forms.views import (
     MedblogersPreEntryView, SpasiboMedblogersPreEntryView,
     NationalBlogersAssociationView, SpasiboNationalBlogersAssociationView,
     ExpressMedblogerView, SpasiboExpressMedblogerView, NeuroMedblogerView, SpasiboNeuroMedblogerView,
-    SpasiboSMMView, SMMView, SpeecadocView, SpasiboSpeecadocView
+    SpasiboSMMView, SMMView, SpeecadocView, SpasiboSpeecadocView,
+    MedSMMView, SpasiboMedSMMView
 )
 
 urlpatterns = [
     path("health/", health_check),
+
+    path("spasibo_med_smm/", SpasiboMedSMMView.as_view(), name="spasibo_med_smm"),
+    path("med_smm/", MedSMMView.as_view(), name="med_smm"),
 
     path("spasibo_smm/", SpasiboSMMView.as_view(), name="spasibo_smm"),
     path("smm/", SMMView.as_view(), name="smm"),
