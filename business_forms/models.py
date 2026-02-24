@@ -70,19 +70,27 @@ class BaseModelForm:
 
     @property
     def instagram_link(self):
+        if self.instagram_username is None:
+            return ""
         return f"https://instagram.com/{self.instagram_username}"
 
     @property
     def tg_username_link(self):
+        if self.tg_username is None:
+            return ""
         tg_username = self.tg_username.replace("@", '')
         return f"https://t.me/{tg_username}"
 
     @property
     def wa_link(self):
+        if self.phone is None or len(self.phone) == 0:
+            return ""
         return f"https://wa.me/{self.phone}"
 
     @property
     def tg_phone_link(self):
+        if self.phone is None or len(self.phone) == 0:
+            return ""
         return f"https://t.me/{format_phone_number(self.phone)}"
 
     def formatted_instagram_link(self):
@@ -842,6 +850,22 @@ class MedSMM(models.Model, BaseModelForm):
         "sales": "Продавать",
         "spreadsheets": "Вести таблицы / планнеры / составлять презентации",
         "documents": "Составлять юридические документы (договор, акт и тд)",
+    }
+
+    OCCUPATION_CHOICES = (
+        ("student", "Студент меда"),
+        ("ordinatur", "Ординатор"),
+        ("doctor", "Работаю врачом"),
+        ("smm_worker", "Работаю в SMM"),
+        ("maternity", "Декрет"),
+    )
+
+    OCCUPATION_MAPPING = {
+        "student": "Студент меда",
+        "ordinatur": "Ординатор",
+        "doctor": "Работаю врачом",
+        "smm_worker": "Работаю в SMM",
+        "maternity": "Декрет",
     }
 
     DESIRED_INCOME_CHOICES = (

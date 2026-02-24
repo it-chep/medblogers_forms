@@ -67,28 +67,30 @@ $(document).ready(function () {
         $fieldWarningContainer.css('display', 'none');
     });
 
-    // Обработчик изменения radio кнопок для occupation
-    $('input[name="radio-occupation"]').change(function () {
-        const $input = $('#id_occupation');
+    // Обработчик изменения checkbox кнопок для occupation
+    $('input[name="checkbox-occupation"]').change(function () {
         const $container = $(this).closest('.field_inline_item_container');
 
         // Сбрасываем ошибки при любом изменении
         $container.removeClass('invalid')
             .find('.field_item_warning_container').hide();
 
+        const $input = $('#id_occupation');
         if ($(this).val() === 'another') {
-            // Если выбрано "Другое" - активируем поле для ввода
-            $input.prop('disabled', false).focus();
-        } else {
-            // Если выбрана предопределённая опция - очищаем и делаем неактивным
-            $input.val('').prop('disabled', true);
+            if ($(this).prop('checked')) {
+                $input.prop('disabled', false).focus();
+            } else {
+                $input.val('').prop('disabled', true);
+            }
         }
     });
 
     // Обработчик изменения самого инпута occupation
     $('#id_occupation').on('input change', function () {
         const $container = $(this).closest('.field_inline_item_container');
+        const $anotherCheckbox = $('#checkbox_occupation_another');
         if ($(this).val().trim()) {
+            $anotherCheckbox.prop('checked', true);
             $container.removeClass('invalid')
                 .find('.field_item_warning_container').hide();
         }
@@ -144,23 +146,23 @@ $(document).ready(function () {
 
         formDataObj['skills'] = JSON.stringify(skills);
 
-        // Обработка occupation
-        const selectedOccupation = $('input[name="radio-occupation"]:checked');
-        if (selectedOccupation.length) {
-            if (selectedOccupation.val() === 'another') {
-                formDataObj['occupation'] = $('#id_occupation').val();
+        // Обработка occupation (множественный выбор)
+        const selectedOccupations = $('input[name="checkbox-occupation"]:checked');
+        let occupationValues = [];
+        selectedOccupations.each(function () {
+            const val = $(this).val();
+            if (val === 'another') {
+                const otherText = $('#id_occupation').val().trim();
+                if (otherText) {
+                    occupationValues.push(otherText);
+                }
             } else {
-                const occupationMapping = {
-                    'student': 'Студент меда',
-                    'ordinatur': 'Ординатор',
-                    'doctor': 'Работаю врачом',
-                    'smm_worker': 'Работаю в SMM',
-                    'maternity': 'Декрет',
-                };
-                formDataObj['occupation'] = occupationMapping[selectedOccupation.val()] || selectedOccupation.val();
+                // Берём текст из label
+                const labelText = $(this).closest('.many-checkbox-button').find('.many-checkbox-button__label').text().trim();
+                occupationValues.push(labelText);
             }
-            formDataObj['radio-occupation'] = selectedOccupation.val();
-        }
+        });
+        formDataObj['occupation'] = occupationValues.join(', ');
 
         // Проверка обязательных полей
         $('form input[required]').each(function () {
@@ -205,14 +207,14 @@ $(document).ready(function () {
             }
         });
 
-        // Проверка occupation
-        if (!selectedOccupation.length) {
+        // Проверка occupation (хотя бы один чекбокс)
+        if (!selectedOccupations.length) {
             const $occupationContainer = $('#field_inline_item_container_occupation');
             const $occupationWarning = $occupationContainer.find('.field_item_warning_container');
             $occupationContainer.addClass('invalid');
             $occupationWarning.css('display', 'block');
             isValid = false;
-        } else if (selectedOccupation.val() === 'another' && !$('#id_occupation').val().trim()) {
+        } else if (selectedOccupations.length === 1 && selectedOccupations.first().val() === 'another' && !$('#id_occupation').val().trim()) {
             const $occupationContainer = $('#field_inline_item_container_occupation');
             const $occupationWarning = $occupationContainer.find('.field_item_warning_container');
             $occupationContainer.addClass('invalid');
@@ -220,15 +222,8 @@ $(document).ready(function () {
             isValid = false;
         }
 
-        // Проверка чекбокса политики
+        // policy_agreement — необязательное
         const $idPolicyPolicy = $('#id_policy_agreement');
-        if (!$idPolicyPolicy.prop('checked')) {
-            const $fieldInputContainer = $idPolicyPolicy.closest('.field_inline_item_container');
-            const $fieldWarningContainer = $fieldInputContainer.find('.field_item_warning_container');
-            $fieldInputContainer.addClass('invalid');
-            $fieldWarningContainer.css('display', 'block');
-            isValid = false;
-        }
         formDataObj["policy_agreement"] = $idPolicyPolicy.prop('checked');
 
         if (!isValid) {
@@ -280,7 +275,7 @@ $(document).ready(function () {
         $('form')[0].reset();
         $('.input_container').removeClass('invalid');
         $('input[name="radio-group"]').prop('checked', false);
-        $('input[name="radio-occupation"]').prop('checked', false);
+        $('input[name="checkbox-occupation"]').prop('checked', false);
         $('#id_occupation').prop('disabled', false).val('');
     });
 

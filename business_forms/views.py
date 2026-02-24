@@ -421,19 +421,10 @@ class MedSMMView(TemplateView, BaseForm):
             ]
             instance.skills = ', '.join(selected_skills)
 
-            # Handle occupation "Другое"
-            occupation_radio = form.data.get("radio-occupation", "")
-            if occupation_radio == "another":
-                instance.occupation = form.data.get("occupation", "")
-            elif occupation_radio:
-                occupation_mapping = {
-                    "student": "Студент меда",
-                    "ordinatur": "Ординатор",
-                    "doctor": "Работаю врачом",
-                    "smm_worker": "Работаю в SMM",
-                    "maternity": "Декрет",
-                }
-                instance.occupation = occupation_mapping.get(occupation_radio, occupation_radio)
+            # Occupation приходит уже в читаемом виде из JS (множественный выбор)
+            occupation_value = form.data.get("occupation", "")
+            if occupation_value:
+                instance.occupation = occupation_value
 
             instance.save()
 

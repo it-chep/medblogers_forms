@@ -559,6 +559,15 @@ class MedSMMForm(forms.ModelForm):
 
         self.fields['skills'].required = False
 
+        # Поля после "мощного бонуса" — необязательные
+        bonus_fields = ['name', 'city', 'instagram_username', 'tg_username', 'email', 'phone']
+        for field_name in bonus_fields:
+            self.fields[field_name].required = False
+
+        # Occupation приходит через чекбоксы, а не через Django-виджет
+        self.fields['occupation'].required = False
+        self.fields['occupation'].choices = list(MedSMM.OCCUPATION_CHOICES)
+
         self.fields['marketing_type'].choices = list(MedSMM.MARKETING_TYPE_CHOICES)
         self.fields['age_range'].choices = list(MedSMM.AGE_RANGE_CHOICES)
         self.fields['average_income'].choices = list(MedSMM.AVERAGE_INCOME_CHOICES)

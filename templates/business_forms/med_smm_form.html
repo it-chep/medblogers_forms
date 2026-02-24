@@ -75,7 +75,9 @@
                                             <a href="https://readyschool.ru/politicapers"
                                                target="_blank">политикой обработки персональных данных</a>
                                         {% endif %}
-                                        <span class="required_star">*</span>
+                                        {% if field.name != "name" and field.name != "city" and field.name != "instagram_username" and field.name != "tg_username" and field.name != "email" and field.name != "phone" and field.name != "policy_agreement" %}
+                                            <span class="required_star">*</span>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -100,66 +102,30 @@
                                                         </div>
                                                     {% endfor %}
                                                 {% elif field.name == "occupation" %}
-                                                    <div class="radio-button">
-                                                        <input type="radio" class="radio-button__input"
-                                                               id="radio_occupation_student"
-                                                               name="radio-occupation" value="student">
-                                                        <label class="radio-button__label"
-                                                               for="radio_occupation_student">
-                                                            <span class="radio-button__custom"></span>
-                                                            Студент меда
-                                                        </label>
-                                                    </div>
-                                                    <div class="radio-button">
-                                                        <input type="radio" class="radio-button__input"
-                                                               id="radio_occupation_ordinatur"
-                                                               name="radio-occupation" value="ordinatur">
-                                                        <label class="radio-button__label"
-                                                               for="radio_occupation_ordinatur">
-                                                            <span class="radio-button__custom"></span>
-                                                            Ординатор
-                                                        </label>
-                                                    </div>
-                                                    <div class="radio-button">
-                                                        <input type="radio" class="radio-button__input"
-                                                               id="radio_occupation_doctor"
-                                                               name="radio-occupation" value="doctor">
-                                                        <label class="radio-button__label"
-                                                               for="radio_occupation_doctor">
-                                                            <span class="radio-button__custom"></span>
-                                                            Работаю врачом
-                                                        </label>
-                                                    </div>
-                                                    <div class="radio-button">
-                                                        <input type="radio" class="radio-button__input"
-                                                               id="radio_occupation_smm_worker"
-                                                               name="radio-occupation" value="smm_worker">
-                                                        <label class="radio-button__label"
-                                                               for="radio_occupation_smm_worker">
-                                                            <span class="radio-button__custom"></span>
-                                                            Работаю в SMM
-                                                        </label>
-                                                    </div>
-                                                    <div class="radio-button">
-                                                        <input type="radio" class="radio-button__input"
-                                                               id="radio_occupation_maternity"
-                                                               name="radio-occupation" value="maternity">
-                                                        <label class="radio-button__label"
-                                                               for="radio_occupation_maternity">
-                                                            <span class="radio-button__custom"></span>
-                                                            Декрет
-                                                        </label>
-                                                    </div>
-                                                    <div class="radio-button">
-                                                        <input type="radio" class="radio-button__input"
-                                                               id="radio_occupation_another"
-                                                               name="radio-occupation" value="another">
-                                                        <label class="radio-button__label"
-                                                               for="radio_occupation_another">
-                                                            <span class="container_nowrap"><span
-                                                                    class="radio-button__custom"></span>
-                                                            Другое:</span> {{ field }}
-                                                        </label>
+                                                    {% for value, label in field.field.choices %}
+                                                        <div class="many-checkbox-button">
+                                                            <input type="checkbox" class="many-checkbox-button__input"
+                                                                   id="checkbox_occupation_{{ value }}"
+                                                                   name="checkbox-occupation" value="{{ value }}">
+                                                            <label class="many-checkbox-button__label"
+                                                                   for="checkbox_occupation_{{ value }}">
+                                                                <span class="many-checkbox-button__custom"></span>
+                                                                {{ label }}
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                    <div class="many-and-another-container">
+                                                        <div class="many-checkbox-button">
+                                                            <input type="checkbox" class="many-checkbox-button__input"
+                                                                   id="checkbox_occupation_another"
+                                                                   name="checkbox-occupation" value="another">
+                                                            <label class="many-checkbox-button__label"
+                                                                   for="checkbox_occupation_another">
+                                                                <span class="container_nowrap"><span
+                                                                        class="many-checkbox-button__custom"></span>
+                                                                Другое:</span> {{ field }}
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 {% elif field.name == "disappointment_level" %}
                                                     <div class="zero_to_ten_choices_container">

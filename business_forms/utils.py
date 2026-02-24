@@ -2,6 +2,9 @@ import re
 
 
 def format_phone_number(phone):
+    if phone is None or len(phone) == 0:
+        return ""
+
     phone_number = re.sub(r'[^\d+]', '', phone)
 
     if phone_number.startswith('8') or phone_number.startswith('7'):
